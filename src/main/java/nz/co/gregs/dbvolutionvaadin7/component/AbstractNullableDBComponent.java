@@ -17,26 +17,41 @@ import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
 /**
  *
  * @author gregorygraham
- * @param <T>
- * @param <Q>
- * @param <C>
+ * @param <S> the simple type of the QueryableDatatype
+ * @param <T> the simple type of the Component
+ * @param <Q> the QDT to use
+ * @param <C> the component to use
  */
 public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatatype<S>, C extends Component & HasValueAndElement<AbstractField.ComponentValueChangeEvent<C, T>, T>> extends AbstractCompositeField<VerticalLayout, AbstractNullableDBComponent<S, T, Q, C>, T> {
 
 	private final Checkbox enabler = new Checkbox(false);
 	private T previousValue = null;
+	private final Q qdt;
 	private final C input = getComponent();
 
-	public AbstractNullableDBComponent(T defaultValue) {
+	public AbstractNullableDBComponent(Q qdt, String label,  T defaultValue) {
 		super(defaultValue);
+		this.qdt = qdt;
+		setLabel(label);
+		
+		if (qdt.isDefined()&&qdt.isNotNull()){
+			final T val = convertDBValueToComponentValue(qdt.getValue());
+			setModelValue(val, false);
+			enabler.setValue(true);
+			input.setValue(val);
+		}
 
 		input.addValueChangeListener((event) -> {
 			setModelValue(getValue(), true);
+			qdt.setValue(convertComponentValueToDBValue(getValue()));
 		});
 
 		enabler.addValueChangeListener((event) -> {
 			toggleInputField(event);
 			setModelValue(getValue(), true);
+			if (!event.getValue()) {
+				qdt.setValueToNull();
+			}
 		});
 
 		enabler.getStyle().set("padding", "0").set("margin", "0").set("border", "0");
@@ -53,10 +68,10 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 	protected void setPresentationValue(T newPresentationValue) {
 		input.setValue(newPresentationValue);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	abstract protected T convertDBValueToComponentValue(S value);
-	
+
 	@SuppressWarnings("unchecked")
 	abstract protected S convertComponentValueToDBValue(T value);
 
@@ -74,7 +89,7 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 	@Override
 	public T getValue() {
 		if (enabler.getValue()) {
-			return getValue();
+			return input.getValue();
 		} else {
 			return null;
 		}
@@ -94,6 +109,10 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 		this.previousValue = suggestion;
 	}
 
-	public abstract C getComponent();
-	public abstract C getComponentForQDT(Q qdt);
+	protected abstract C getComponent();
+	
+	public final void setLabel(String label){
+		enabler.setLabel(label);
+	} ;
+
 }

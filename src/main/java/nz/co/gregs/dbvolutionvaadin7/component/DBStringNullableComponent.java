@@ -10,8 +10,8 @@ import nz.co.gregs.dbvolution.datatypes.DBString;
 
 public class DBStringNullableComponent extends AbstractNullableDBComponent<String, String, DBString, TextArea> {
 
-	public DBStringNullableComponent(String defaultValue) {
-		super(defaultValue);
+	public DBStringNullableComponent(DBString qdt, String label, String defaultValue) {
+		super(qdt, label, defaultValue);
 	}
 
 	@Override
@@ -20,14 +20,14 @@ public class DBStringNullableComponent extends AbstractNullableDBComponent<Strin
 		return text;
 	}
 
-	@Override
-	public TextArea getComponentForQDT(DBString qdt) {
-		final TextArea text = getComponent();
-		text.addValueChangeListener((event) -> {
-			qdt.setValue(event.getValue());
-		});
-		return text;
-	}
+//	@Override
+//	public TextArea getComponentForQDT(DBString qdt) {
+//		final TextArea text = getComponent();
+//		text.addValueChangeListener((event) -> {
+//			qdt.setValue(event.getValue());
+//		});
+//		return text;
+//	}
 
 	@Override
 	protected String convertDBValueToComponentValue(String value) {

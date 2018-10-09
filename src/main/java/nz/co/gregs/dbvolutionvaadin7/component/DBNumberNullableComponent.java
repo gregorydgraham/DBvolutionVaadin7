@@ -10,8 +10,8 @@ import nz.co.gregs.dbvolution.datatypes.DBNumber;
 
 public class DBNumberNullableComponent extends AbstractNullableDBComponent<Number, String, DBNumber, TextField> {
 
-	public DBNumberNullableComponent(String defaultValue) {
-		super(defaultValue);
+	public DBNumberNullableComponent(DBNumber qdt, String label, String defaultValue) {
+		super(qdt, label, defaultValue);
 	}
 
 	@Override
@@ -20,14 +20,14 @@ public class DBNumberNullableComponent extends AbstractNullableDBComponent<Numbe
 		return text;
 	}
 
-	@Override
-	public NumberField getComponentForQDT(DBNumber qdt) {
-		final NumberField numberField = getComponent();
-		numberField.addValueChangeListener((event) -> {
-			qdt.setValue(event.getValue());
-		});
-		return numberField;
-	}
+//	@Override
+//	public NumberField getComponentForQDT(DBNumber qdt) {
+//		final NumberField numberField = getComponent();
+//		numberField.addValueChangeListener((event) -> {
+//			qdt.setValue(event.getValue());
+//		});
+//		return numberField;
+//	}
 
 	@Override
 	protected String convertDBValueToComponentValue(Number value) {

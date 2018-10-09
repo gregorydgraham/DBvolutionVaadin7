@@ -15,8 +15,8 @@ import nz.co.gregs.dbvolution.datatypes.DBDate;
 
 public class DBDateNullableComponent extends AbstractNullableDBComponent<Date, LocalDate, DBDate, DatePicker> {
 
-	public DBDateNullableComponent(LocalDate defaultValue) {
-		super(defaultValue);
+	public DBDateNullableComponent(DBDate qdt, String label, LocalDate defaultValue) {
+		super(qdt, label, defaultValue);
 	}
 
 	@Override
@@ -25,14 +25,14 @@ public class DBDateNullableComponent extends AbstractNullableDBComponent<Date, L
 		return text;
 	}
 
-	@Override
-	public DatePicker getComponentForQDT(DBDate qdt) {
-		final DatePicker numberField = getComponent();
-		numberField.addValueChangeListener((event) -> {
-			qdt.setValue(convertComponentValueToDBValue(event.getValue()));
-		});
-		return numberField;
-	}
+//	@Override
+//	public DatePicker getComponentForQDT(DBDate qdt) {
+//		final DatePicker field = getComponent();
+//		field.addValueChangeListener((event) -> {
+//			qdt.setValue(convertComponentValueToDBValue(event.getValue()));
+//		});
+//		return field;
+//	}
 
 	@Override
 	protected LocalDate convertDBValueToComponentValue(Date value) {
@@ -54,6 +54,5 @@ public class DBDateNullableComponent extends AbstractNullableDBComponent<Date, L
 	@Override
 	protected Date convertComponentValueToDBValue(LocalDate value) {
 		return convertComponentValueToDBValue(value.atTime(8, 0));
-	}
-	
+	}	
 }

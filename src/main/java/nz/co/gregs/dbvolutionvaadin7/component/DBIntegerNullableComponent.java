@@ -7,12 +7,11 @@ package nz.co.gregs.dbvolutionvaadin7.component;
 
 import com.vaadin.flow.component.textfield.TextField;
 import nz.co.gregs.dbvolution.datatypes.DBInteger;
-import nz.co.gregs.dbvolution.datatypes.DBNumber;
 
 public class DBIntegerNullableComponent extends AbstractNullableDBComponent<Long, String, DBInteger, TextField> {
 
-	public DBIntegerNullableComponent(String defaultValue) {
-		super(defaultValue);
+	public DBIntegerNullableComponent(DBInteger qdt, String label, String defaultValue) {
+		super(qdt, label, defaultValue);
 	}
 
 	@Override
@@ -21,14 +20,14 @@ public class DBIntegerNullableComponent extends AbstractNullableDBComponent<Long
 		return text;
 	}
 
-	@Override
-	public IntegerField getComponentForQDT(DBInteger qdt) {
-		final IntegerField numberField = getComponent();
-		numberField.addValueChangeListener((event) -> {
-			qdt.setValue(event.getValue());
-		});
-		return numberField;
-	}
+//	@Override
+//	public IntegerField getComponentForQDT(DBInteger qdt) {
+//		final IntegerField numberField = getComponent();
+//		numberField.addValueChangeListener((event) -> {
+//			qdt.setValue(event.getValue());
+//		});
+//		return numberField;
+//	}
 
 	@Override
 	protected String convertDBValueToComponentValue(Long value) {
