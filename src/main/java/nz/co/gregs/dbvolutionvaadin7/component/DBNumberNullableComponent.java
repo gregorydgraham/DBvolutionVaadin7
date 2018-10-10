@@ -20,15 +20,6 @@ public class DBNumberNullableComponent extends AbstractNullableDBComponent<Numbe
 		return text;
 	}
 
-//	@Override
-//	public NumberField getComponentForQDT(DBNumber qdt) {
-//		final NumberField numberField = getComponent();
-//		numberField.addValueChangeListener((event) -> {
-//			qdt.setValue(event.getValue());
-//		});
-//		return numberField;
-//	}
-
 	@Override
 	protected String convertDBValueToComponentValue(Number value) {
 		return ""+value;

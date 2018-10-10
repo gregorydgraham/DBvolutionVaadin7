@@ -26,32 +26,34 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 
 	private final Checkbox enabler = new Checkbox(false);
 	private T previousValue = null;
-	private final Q qdt;
+	private final Q queryableDatatype;
 	private final C input = getComponent();
 
-	public AbstractNullableDBComponent(Q qdt, String label,  T defaultValue) {
+	public AbstractNullableDBComponent(Q qdt, String label, T defaultValue) {
 		super(defaultValue);
-		this.qdt = qdt;
+		this.queryableDatatype = qdt;
 		setLabel(label);
-		
-		if (qdt.isDefined()&&qdt.isNotNull()){
-			final T val = convertDBValueToComponentValue(qdt.getValue());
+
+		if (queryableDatatype.isDefined() && queryableDatatype.isNotNull()) {
+			final T val = convertDBValueToComponentValue(queryableDatatype.getValue());
 			setModelValue(val, false);
 			enabler.setValue(true);
 			input.setValue(val);
 		}
 
 		input.addValueChangeListener((event) -> {
-			setModelValue(getValue(), true);
-			qdt.setValue(convertComponentValueToDBValue(getValue()));
+			System.out.println("INPUT HAS CHANGED");
+			queryableDatatype.setValue(convertComponentValueToDBValue(event.getValue()));
+			setModelValue(event.getValue(), true);
 		});
 
 		enabler.addValueChangeListener((event) -> {
+			System.out.println("ENABLER HAS CHANGED");
 			toggleInputField(event);
-			setModelValue(getValue(), true);
 			if (!event.getValue()) {
-				qdt.setValueToNull();
+				queryableDatatype.setValueToNull();
 			}
+			setModelValue(getValue(), true);
 		});
 
 		enabler.getStyle().set("padding", "0").set("margin", "0").set("border", "0");
@@ -81,7 +83,7 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 			input.setValue(previousValue);
 		} else {
 			previousValue = getValue();
-			input.setValue(null);
+			input.setValue(input.getEmptyValue());
 		}
 		input.setEnabled(value);
 	}
@@ -91,18 +93,19 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 		if (enabler.getValue()) {
 			return input.getValue();
 		} else {
-			return null;
+			return getEmptyValue();
 		}
 	}
 
 	@Override
 	public void setValue(T value) {
+		super.setValue(value);
+		System.out.println("SET VALUE CALLED");
 		if (value == null) {
 			enabler.setValue(Boolean.FALSE);
 		} else {
 			enabler.setValue(Boolean.TRUE);
 		}
-		super.setValue(value);
 	}
 
 	public void setDefaultValue(T suggestion) {
@@ -110,9 +113,8 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 	}
 
 	protected abstract C getComponent();
-	
-	public final void setLabel(String label){
-		enabler.setLabel(label);
-	} ;
 
+	public final void setLabel(String label) {
+		enabler.setLabel(label);
+	}
 }

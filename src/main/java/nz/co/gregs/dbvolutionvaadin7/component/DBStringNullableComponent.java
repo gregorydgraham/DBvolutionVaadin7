@@ -20,15 +20,6 @@ public class DBStringNullableComponent extends AbstractNullableDBComponent<Strin
 		return text;
 	}
 
-//	@Override
-//	public TextArea getComponentForQDT(DBString qdt) {
-//		final TextArea text = getComponent();
-//		text.addValueChangeListener((event) -> {
-//			qdt.setValue(event.getValue());
-//		});
-//		return text;
-//	}
-
 	@Override
 	protected String convertDBValueToComponentValue(String value) {
 		return value;

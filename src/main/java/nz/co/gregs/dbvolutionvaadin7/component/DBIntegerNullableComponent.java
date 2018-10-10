@@ -20,15 +20,6 @@ public class DBIntegerNullableComponent extends AbstractNullableDBComponent<Long
 		return text;
 	}
 
-//	@Override
-//	public IntegerField getComponentForQDT(DBInteger qdt) {
-//		final IntegerField numberField = getComponent();
-//		numberField.addValueChangeListener((event) -> {
-//			qdt.setValue(event.getValue());
-//		});
-//		return numberField;
-//	}
-
 	@Override
 	protected String convertDBValueToComponentValue(Long value) {
 		return ""+value;

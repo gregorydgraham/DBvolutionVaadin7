@@ -25,14 +25,10 @@ public class DBDateNullableComponent extends AbstractNullableDBComponent<Date, L
 		return text;
 	}
 
-//	@Override
-//	public DatePicker getComponentForQDT(DBDate qdt) {
-//		final DatePicker field = getComponent();
-//		field.addValueChangeListener((event) -> {
-//			qdt.setValue(convertComponentValueToDBValue(event.getValue()));
-//		});
-//		return field;
-//	}
+	@Override
+	public void setValue(LocalDate value) {
+		super.setValue(value);
+	}
 
 	@Override
 	protected LocalDate convertDBValueToComponentValue(Date value) {
@@ -53,6 +49,6 @@ public class DBDateNullableComponent extends AbstractNullableDBComponent<Date, L
 
 	@Override
 	protected Date convertComponentValueToDBValue(LocalDate value) {
-		return convertComponentValueToDBValue(value.atTime(8, 0));
+		return value==null?null:convertComponentValueToDBValue(value.atTime(8, 0));
 	}	
 }

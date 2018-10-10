@@ -5,13 +5,10 @@
  */
 package nz.co.gregs.dbvolutionvaadin7.component;
 
-import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.AbstractCompositeField;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.internal.AbstractFieldSupport;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.shared.Registration;
 import java.time.LocalDate;
 import java.util.List;
 import nz.co.gregs.dbvolution.DBRow;
@@ -27,27 +24,69 @@ import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
  * @author gregorygraham
  * @param <R>
  */
-public class DBRowForm<R extends DBRow> extends FormLayout {
+public class DBRowForm<R extends DBRow> extends AbstractCompositeField<FormLayout, DBRowForm<R>, R> {
 
 	public DBRowForm(R row) {
+		super(DBRow.copyDBRow(row));
+		setValue(DBRow.copyDBRow(row));
+		setPresentationValue(DBRow.copyDBRow(row));
+	}
+
+	@Override
+	protected final void setPresentationValue(R row) {
+		final FormLayout content = getContent();
+		content.removeAll();
 		List<PropertyWrapper> columns = row.getColumnPropertyWrappers();
 		for (PropertyWrapper column : columns) {
 			QueryableDatatype<?> qdt = column.getQueryableDatatype();
 			Component comp = new TextField(column.javaName());
 			if (qdt instanceof DBInteger) {
-				comp = new DBIntegerNullableComponent((DBInteger) qdt, column.javaName(), "");
-			} else if (qdt instanceof DBNumber) {
-				comp = new DBNumberNullableComponent((DBNumber) qdt, column.javaName(), "");
-			} else if (qdt instanceof DBString) {
-				comp = new DBStringNullableComponent((DBString) qdt, column.javaName(), "");
-			} else if (qdt instanceof DBDate) {
-				final DBDateNullableComponent dateComp = new DBDateNullableComponent((DBDate) qdt, column.javaName(), LocalDate.now());
-				dateComp.addValueChangeListener((event) -> {
+				final DBIntegerNullableComponent com = new DBIntegerNullableComponent((DBInteger) qdt, column.javaName(), "");
+				com.addValueChangeListener((event) -> {
+					setValue(row);
 				});
-				comp = dateComp;
+				comp = com;
+			} else if (qdt instanceof DBNumber) {
+				final DBNumberNullableComponent com = new DBNumberNullableComponent((DBNumber) qdt, column.javaName(), "");
+				com.addValueChangeListener((event) -> {
+					setValue(row);
+				});
+				comp = com;
+			} else if (qdt instanceof DBString) {
+				final DBStringNullableComponent com = new DBStringNullableComponent((DBString) qdt, column.javaName(), "");
+				com.addValueChangeListener((event) -> {
+					setValue(row);
+				});
+				comp = com;
+			} else if (qdt instanceof DBDate) {
+				final DBDateNullableComponent com = new DBDateNullableComponent((DBDate) qdt, column.javaName(), LocalDate.now());
+				com.addValueChangeListener((event) -> {
+					setValue(row);
+				});
+				comp = com;
 			}
-			add(comp);
+			content.add(comp);
 		}
 	}
 
+	@Override
+	public final void setValue(R value) {
+		System.out.println("FORM SET VALUE HAS BEEN CALLED: " + value);
+		System.out.println("CURRENT VALUE: " + getValue());
+		super.setValue(DBRow.copyDBRow(value));
+	}
+
+	@Override
+	protected boolean valueEquals(R value1, R value2) {
+		System.out.println("VALUE EQUALS: " + value1.toString() + " ?= " + value2.toString());
+		return value1.toString().equals(value2.toString());
+	}
+
+	public class DBRowValueChangeEvent<R extends DBRow> extends com.vaadin.flow.component.ComponentEvent<DBRowForm<R>>// ValueChangeEvent<DBRowForm<R>> {
+	{
+
+		public DBRowValueChangeEvent(DBRowForm<R> source, boolean fromClient) {
+			super(source, fromClient);
+		}
+	}
 }

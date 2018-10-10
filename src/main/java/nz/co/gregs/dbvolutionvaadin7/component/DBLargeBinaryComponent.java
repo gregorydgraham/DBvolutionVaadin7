@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nz.co.gregs.dbvolutionvaadin7.component;
+package nz.co.gregs.dbvolution.component;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
