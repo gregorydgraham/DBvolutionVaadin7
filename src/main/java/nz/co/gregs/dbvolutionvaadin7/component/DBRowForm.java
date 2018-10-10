@@ -53,7 +53,7 @@ public class DBRowForm<R extends DBRow> extends AbstractCompositeField<FormLayou
 				});
 				comp = com;
 			} else if (qdt instanceof DBString) {
-				final DBStringNullableComponent com = new DBStringNullableComponent((DBString) qdt, column.javaName(), "");
+				final DBStringFieldNullableComponent com = new DBStringFieldNullableComponent((DBString) qdt, column.javaName(), "");
 				com.addValueChangeListener((event) -> {
 					setValue(row);
 				});
