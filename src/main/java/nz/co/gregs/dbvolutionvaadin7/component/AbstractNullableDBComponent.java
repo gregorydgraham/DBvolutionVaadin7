@@ -42,13 +42,11 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 		}
 
 		input.addValueChangeListener((event) -> {
-			System.out.println("INPUT HAS CHANGED");
 			queryableDatatype.setValue(convertComponentValueToDBValue(event.getValue()));
 			setModelValue(event.getValue(), true);
 		});
 
 		enabler.addValueChangeListener((event) -> {
-			System.out.println("ENABLER HAS CHANGED");
 			toggleInputField(event);
 			if (!event.getValue()) {
 				queryableDatatype.setValueToNull();
@@ -62,7 +60,7 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 
 		final VerticalLayout content = getContent();
 		content.add(enabler, input);
-		content.addClassName("optional-date-picker");
+		content.addClassName("dbvolution-optional-value");
 		content.setAlignItems(FlexComponent.Alignment.START);
 	}
 
@@ -100,7 +98,6 @@ public abstract class AbstractNullableDBComponent<S, T, Q extends QueryableDatat
 	@Override
 	public void setValue(T value) {
 		super.setValue(value);
-		System.out.println("SET VALUE CALLED");
 		if (value == null) {
 			enabler.setValue(Boolean.FALSE);
 		} else {

@@ -71,14 +71,11 @@ public class DBRowForm<R extends DBRow> extends AbstractCompositeField<FormLayou
 
 	@Override
 	public final void setValue(R value) {
-		System.out.println("FORM SET VALUE HAS BEEN CALLED: " + value);
-		System.out.println("CURRENT VALUE: " + getValue());
 		super.setValue(DBRow.copyDBRow(value));
 	}
 
 	@Override
 	protected boolean valueEquals(R value1, R value2) {
-		System.out.println("VALUE EQUALS: " + value1.toString() + " ?= " + value2.toString());
 		return value1.toString().equals(value2.toString());
 	}
 
