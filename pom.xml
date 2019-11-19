@@ -8,13 +8,13 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>dbvolution7</artifactId>
-            <version>0.9.18-SNAPSHOT</version>
+            <artifactId>dbvolution10</artifactId>
+            <version>0.9.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-core</artifactId>
-            <version>11.0.1</version>
+            <version>14.0.12</version>
         </dependency>
     </dependencies>
     <properties>
