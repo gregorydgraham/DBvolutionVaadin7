@@ -6,6 +6,8 @@
 package nz.co.gregs.amhan.browser.components;
 
 import com.vaadin.flow.component.textfield.TextField;
+import nz.co.gregs.dbvolution.datatypes.DBString;
+import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 
 /**
  *
@@ -13,10 +15,14 @@ import com.vaadin.flow.component.textfield.TextField;
  */
 public class DBStringField extends TextField {
 	
+	public static DBStringField getField(PropertyWrapper<String, DBString> prop){
+		return new DBStringField(prop.javaName(),new QDTValueChangeListener<>(prop.getQueryableDatatype()));
+	}
+
 	/**
 	 * Constructs an empty {@code TextField}.
 	 */
-	public DBStringField() {
+	private DBStringField() {
 		super();
 	}
 
@@ -24,7 +30,7 @@ public class DBStringField extends TextField {
 	 * Constructs an empty {@code TextField} with the given label.
 	 * @param label the text to set as the label
 	 */
-	public DBStringField(String label) {
+	private DBStringField(String label) {
 		super(label);
 	}
 
@@ -34,7 +40,7 @@ public class DBStringField extends TextField {
 	 * @param label the text to set as the label
 	 * @param placeholder the placeholder text to set
 	 */
-	public DBStringField(String label, String placeholder) {
+	private DBStringField(String label, String placeholder) {
 		super(label, placeholder);
 	}
 
@@ -47,7 +53,7 @@ public class DBStringField extends TextField {
 	 * @see #setValue(Object)
 	 * @see #setPlaceholder(String)
 	 */
-	public DBStringField(String label, String initialValue, String placeholder) {
+	private DBStringField(String label, String initialValue, String placeholder) {
 		super(label, initialValue==null?"":initialValue, placeholder);
 	}
 
@@ -56,7 +62,7 @@ public class DBStringField extends TextField {
 	 * @param listener the value change listener
 	 * @see #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
 	 */
-	public DBStringField(ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
+	private DBStringField(ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
 		super(listener);
 	}
 
@@ -68,7 +74,7 @@ public class DBStringField extends TextField {
 	 * @see #setLabel(String)
 	 * @see #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
 	 */
-	public DBStringField(String label, ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
+	private DBStringField(String label, ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
 		super(label, listener);
 	}
 
@@ -82,7 +88,7 @@ public class DBStringField extends TextField {
 	 * @see #setValue(Object)
 	 * @see #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
 	 */
-	public DBStringField(String label, String initialValue, ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
+	private DBStringField(String label, String initialValue, ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
 		super(label, initialValue==null?"":initialValue, listener);
 	}
 	

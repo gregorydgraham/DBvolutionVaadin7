@@ -12,6 +12,8 @@ import java.text.CompactNumberFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
+import nz.co.gregs.dbvolution.datatypes.DBInteger;
+import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 
 /**
  * Server-side component for the {@code vaadin-number-field} element.
@@ -23,7 +25,7 @@ public class DBIntegerField extends AbstractNumberField<DBIntegerField, Long> {
 	/**
 	 * Constructs an empty {@code NumberField}.
 	 */
-	public DBIntegerField() {
+	private DBIntegerField() {
 		this(new Formatter());
 	}
 
@@ -32,9 +34,13 @@ public class DBIntegerField extends AbstractNumberField<DBIntegerField, Long> {
 	 *
 	 * @param label the text to set as the label
 	 */
-	public DBIntegerField(String label) {
+	private DBIntegerField(String label) {
 		this();
 		setLabel(label);
+	}
+	
+	public static DBIntegerField getField(PropertyWrapper<Long, DBInteger> prop){
+		return new DBIntegerField(prop);
 	}
 
 	/**
@@ -44,7 +50,20 @@ public class DBIntegerField extends AbstractNumberField<DBIntegerField, Long> {
 	 * @param label the text to set as the label
 	 * @param placeholder the placeholder text to set
 	 */
-	public DBIntegerField(String label, String placeholder) {
+	private DBIntegerField(PropertyWrapper<Long, DBInteger> prop) {
+		this();
+		setLabel(prop.javaName());
+		addValueChangeListener(new QDTValueChangeListener<>(prop.getQueryableDatatype()));
+	}
+
+	/**
+	 * Constructs an empty {@code NumberField} with the given label and
+	 * placeholder text.
+	 *
+	 * @param label the text to set as the label
+	 * @param placeholder the placeholder text to set
+	 */
+	private DBIntegerField(String label, String placeholder) {
 		this(label);
 		setPlaceholder(placeholder);
 	}
@@ -57,7 +76,7 @@ public class DBIntegerField extends AbstractNumberField<DBIntegerField, Long> {
 	 * @see
 	 * #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
 	 */
-	public DBIntegerField(
+	private DBIntegerField(
 			ValueChangeListener<? super ComponentValueChangeEvent<DBIntegerField, Long>> listener) {
 		this();
 		addValueChangeListener(listener);
@@ -74,7 +93,7 @@ public class DBIntegerField extends AbstractNumberField<DBIntegerField, Long> {
 	 * @see
 	 * #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
 	 */
-	public DBIntegerField(String label,
+	private DBIntegerField(String label,
 			ValueChangeListener<? super ComponentValueChangeEvent<DBIntegerField, Long>> listener) {
 		this(label);
 		addValueChangeListener(listener);
@@ -93,7 +112,7 @@ public class DBIntegerField extends AbstractNumberField<DBIntegerField, Long> {
 	 * @see
 	 * #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
 	 */
-	public DBIntegerField(String label, Long initialValue,
+	private DBIntegerField(String label, Long initialValue,
 			ValueChangeListener<? super ComponentValueChangeEvent<DBIntegerField, Long>> listener) {
 		this(label);
 		setValue(initialValue);

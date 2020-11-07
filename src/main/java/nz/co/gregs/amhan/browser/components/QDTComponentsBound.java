@@ -38,11 +38,11 @@ public class QDTComponentsBound<ROW extends DBRow, TYPE> {
 //	static <R extends DBRow, T, Q extends QueryableDatatype<T>> QDTComponentsBound<R, T> getFor(PropertyWrapper<T, Q> prop, Binder<R> binder) {
 //		@SuppressWarnings("unchecked")
 //		QDTComponentsBound<R, T> qdtComponents = new QDTComponentsBound<R,T>((R)prop.getRowDefinitionInstanceWrapper().adapteeRowDefinition(), prop.getQueryableDatatype());
-//		binder.bind(qdtComponents.getEditor(), qdtComponents.getValueProvider(), qdtComponents.getSetter());
+//		binder.bind(qdtComponents.getField(), qdtComponents.getValueProvider(), qdtComponents.getSetter());
 //		return qdtComponents;
 //	}
 	private <QDT extends QueryableDatatype<TYPE>> QDTComponentsBound(ROW row, QDT field) {
-		editor = DBRowPropertyField.getEditor(row, field);
+		editor = QueryableDatatypeField.getField(row, field);
 		valueProvider = QueryableDatatypeValueProvider.getValueProvider(row, field);
 		setter = QueryableDatatypeSetter.getSetter(row, field);
 		PropertyWrapper<?, ?> property = row.getPropertyWrapperOf(field);

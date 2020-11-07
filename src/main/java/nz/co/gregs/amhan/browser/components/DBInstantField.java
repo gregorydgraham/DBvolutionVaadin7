@@ -42,6 +42,8 @@ import java.text.ParseException;
 import java.time.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nz.co.gregs.dbvolution.datatypes.DBInstant;
+import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 import nz.co.gregs.dbvolution.utility.TemporalStringParser;
 
 @Tag("vaadin-date-time-picker-date-picker")
@@ -93,10 +95,13 @@ public class DBInstantField extends AbstractField<DBInstantField, Instant>
 	private Instant min;
 	private boolean required;
 
+	public static DBInstantField getField(PropertyWrapper<Instant, DBInstant>prop){
+		return new DBInstantField(prop.javaName(),new QDTValueChangeListener<>(prop.getQueryableDatatype()));
+	}
 	/**
 	 * Default constructor.
 	 */
-	public DBInstantField() {
+	private DBInstantField() {
 		this((Instant) null);
 	}
 
@@ -106,7 +111,7 @@ public class DBInstantField extends AbstractField<DBInstantField, Instant>
 	 * @param label the label describing the date time picker
 	 * @see #setLabel(String)
 	 */
-	public DBInstantField(String label) {
+	private DBInstantField(String label) {
 		this();
 		setLabel(label);
 	}
@@ -120,7 +125,7 @@ public class DBInstantField extends AbstractField<DBInstantField, Instant>
 	 * @see #setValue(Instant)
 	 * @see #setLabel(String)
 	 */
-	public DBInstantField(String label, Instant initialDateTime) {
+	private DBInstantField(String label, Instant initialDateTime) {
 		this(initialDateTime);
 		setLabel(label);
 	}
@@ -131,7 +136,7 @@ public class DBInstantField extends AbstractField<DBInstantField, Instant>
 	 *
 	 * @param initialDateTime the pre-selected date time in the picker
 	 */
-	public DBInstantField(Instant initialDateTime) {
+	private DBInstantField(Instant initialDateTime) {
 		super(null);
 		if (initialDateTime != null) {
 			setPresentationValue(initialDateTime);
@@ -159,7 +164,7 @@ public class DBInstantField extends AbstractField<DBInstantField, Instant>
 	 * @param listener the listener to receive value change events
 	 * @see #addValueChangeListener(HasValue.ValueChangeListener)
 	 */
-	public DBInstantField(
+	private DBInstantField(
 			ValueChangeListener<ComponentValueChangeEvent<DBInstantField, Instant>> listener) {
 		this();
 		addValueChangeListener(listener);
@@ -175,7 +180,7 @@ public class DBInstantField extends AbstractField<DBInstantField, Instant>
 	 * @see #setLabel(String)
 	 * @see #addValueChangeListener(HasValue.ValueChangeListener)
 	 */
-	public DBInstantField(String label,
+	private DBInstantField(String label,
 			ValueChangeListener<ComponentValueChangeEvent<DBInstantField, Instant>> listener) {
 		this(label);
 		addValueChangeListener(listener);
@@ -190,7 +195,7 @@ public class DBInstantField extends AbstractField<DBInstantField, Instant>
 	 * @see #setValue(Instant)
 	 * @see #addValueChangeListener(HasValue.ValueChangeListener)
 	 */
-	public DBInstantField(Instant initialDateTime,
+	private DBInstantField(Instant initialDateTime,
 			ValueChangeListener<ComponentValueChangeEvent<DBInstantField, Instant>> listener) {
 		this(initialDateTime);
 		addValueChangeListener(listener);
@@ -208,7 +213,7 @@ public class DBInstantField extends AbstractField<DBInstantField, Instant>
 	 * @see #setValue(Instant)
 	 * @see #addValueChangeListener(HasValue.ValueChangeListener)
 	 */
-	public DBInstantField(String label, Instant initialDateTime,
+	private DBInstantField(String label, Instant initialDateTime,
 			ValueChangeListener<ComponentValueChangeEvent<DBInstantField, Instant>> listener) {
 		this(initialDateTime);
 		setLabel(label);
@@ -222,7 +227,7 @@ public class DBInstantField extends AbstractField<DBInstantField, Instant>
 	 * @param initialDateTime the pre-selected date time in the picker
 	 * @param locale the locale for the date time picker
 	 */
-	public DBInstantField(Instant initialDateTime, Locale locale) {
+	private DBInstantField(Instant initialDateTime, Locale locale) {
 		this(initialDateTime);
 		setLocale(locale);
 	}
