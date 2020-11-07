@@ -35,12 +35,6 @@ public class QDTComponentsBound<ROW extends DBRow, TYPE> {
 		return qdtComponents;
 	}
 
-//	static <R extends DBRow, T, Q extends QueryableDatatype<T>> QDTComponentsBound<R, T> getFor(PropertyWrapper<T, Q> prop, Binder<R> binder) {
-//		@SuppressWarnings("unchecked")
-//		QDTComponentsBound<R, T> qdtComponents = new QDTComponentsBound<R,T>((R)prop.getRowDefinitionInstanceWrapper().adapteeRowDefinition(), prop.getQueryableDatatype());
-//		binder.bind(qdtComponents.getField(), qdtComponents.getValueProvider(), qdtComponents.getSetter());
-//		return qdtComponents;
-//	}
 	private <QDT extends QueryableDatatype<TYPE>> QDTComponentsBound(ROW row, QDT field) {
 		editor = QueryableDatatypeField.getField(row, field);
 		valueProvider = QueryableDatatypeValueProvider.getValueProvider(row, field);
