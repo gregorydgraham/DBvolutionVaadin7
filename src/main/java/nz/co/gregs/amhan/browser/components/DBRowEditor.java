@@ -38,9 +38,6 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 		row = forThisRow;
 		this.binder = andThisBinder;
 
-		System.out.println("SET ROWEDITOR ROW: " + row);
-		System.out.println("IS DEFINED:" + row.getDefined());
-
 		initButtons();
 
 		createEditorLayout(andThisBinder, row);
