@@ -28,8 +28,8 @@ class QueryableDatatypeField {
 	private static <A extends DBRow, T, QDT extends QueryableDatatype<T>, C extends AbstractField<C, T>> C getFieldForQDT(A example, QDT qdt) {
 		PropertyWrapper<T, QDT> prop = example.getPropertyWrapperOf(qdt);
 		C returnField = null;
-//		if (qdt instanceof DBBoolean) {
-//			return new DBBoolean<A>(example, (DBBoolean) qdt);
+		if (qdt instanceof DBBoolean) {
+			returnField = (C) DBBooleanField.getField((PropertyWrapper<Boolean, DBBoolean>) prop);
 //		} else if (qdt instanceof DBBooleanArray) {
 //			return new DBBooleanArrayField<A>(example, (DBBooleanArray) qdt);
 //		} else if (qdt instanceof DBDateOnly) {
@@ -40,8 +40,7 @@ class QueryableDatatypeField {
 //			return new DBDurationField<A>(example, (DBDuration) qdt);
 //		} else if (qdt instanceof DBEncryptedText) {
 //			return new DBEncryptedTextField<A>(example, (DBEncryptedText) qdt);
-//		} else 
-		if (qdt instanceof DBInstant) {
+		} else if (qdt instanceof DBInstant) {
 			returnField = (C) DBInstantField.getField((PropertyWrapper<Instant, DBInstant>) prop);
 		} else if (qdt instanceof DBInteger) {
 			returnField = (C) DBIntegerField.getField((PropertyWrapper<Long, DBInteger>) prop);

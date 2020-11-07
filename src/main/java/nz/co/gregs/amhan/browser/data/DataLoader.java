@@ -10,6 +10,7 @@ import nz.co.gregs.amhan.browser.data.schema.Comments;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import java.sql.SQLException;
 import java.time.Instant;
+import nz.co.gregs.amhan.browser.data.schema.TestTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -38,6 +39,7 @@ public class DataLoader {
 	private void setData(Database db) throws SQLException {
 		db.createTable(new BrowserUser());
 		db.createTable(new Comments());
+		db.createTable(new TestTable());
 		final BrowserUser alice = new BrowserUser("alice", "password");
 		
 		db.insert(alice,
@@ -50,6 +52,11 @@ public class DataLoader {
 		db.insert(
 				new Comments().withOwner(alice).postedAt(Instant.now()).withText("Great website"),
 				new Comments().withOwner(alice).withText("Is anyone else here?")
+				);
+		
+		db.insert(
+				new TestTable().withOwner(alice).postedAt(Instant.now()).withText("Great website").read(),
+				new TestTable().withOwner(alice).withText("Is anyone else here?").notRead()
 				);
 	}
 
