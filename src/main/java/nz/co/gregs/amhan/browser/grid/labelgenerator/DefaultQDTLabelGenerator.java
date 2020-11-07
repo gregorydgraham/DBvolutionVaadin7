@@ -11,17 +11,17 @@ import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
 /**
  *
  * @author gregorygraham
- * @param <A>
- * @param <T>
+ * @param <ROW>
+ * @param <TYPE>
  */
-public class DefaultQDTLabelGenerator<A extends DBRow, T> extends AbstractDBRowPropertyLabelGenerator<A, QueryableDatatype<T>> {
+public class DefaultQDTLabelGenerator<ROW extends DBRow, TYPE> extends AbstractDBRowPropertyLabelGenerator<ROW, QueryableDatatype<TYPE>> {
 
-	public DefaultQDTLabelGenerator(A example, QueryableDatatype<T> qdt) {
+	public DefaultQDTLabelGenerator(ROW example, QueryableDatatype<TYPE> qdt) {
 		super(example, qdt);
 	}
 
 	@Override
-	public String apply(A item) {
+	public String apply(ROW item) {
 		return getQDT(item).stringValue();
 	}
 
