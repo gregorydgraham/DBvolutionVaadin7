@@ -24,6 +24,7 @@ class DBRowPropertyField {
 	@SuppressWarnings("unchecked")
 	private static <A extends DBRow, T, QDT extends QueryableDatatype<T>, C extends AbstractField<C, T>> C getFieldForQDT(A example, QDT qdt) {
 		PropertyWrapper<T, QDT> prop = example.getPropertyWrapperOf(qdt);
+		C returnField= null;
 //		if (qdt instanceof DBBoolean) {
 //			return new DBBoolean<A>(example, (DBBoolean) qdt);
 //		} else if (qdt instanceof DBBooleanArray) {
@@ -43,14 +44,14 @@ class DBRowPropertyField {
 					stringQDT.stringValue(),
 					new QDTValueChangeListener(stringQDT)
 			);
-			return (C) dateTimePicker;
+			returnField= (C) dateTimePicker;
 		} else if (qdt instanceof DBInteger) {
 			DBInteger integerQDT = (DBInteger) qdt;
 			final DBIntegerField numberField = new DBIntegerField(
-										prop.columnName(),
+					prop.javaName(),
 					new QDTValueChangeListener(integerQDT)
 			);
-			return (C) numberField;
+			returnField= (C) numberField;
 //			return new DBIntegerField<A>(example, (DBInteger) qdt);
 //		} else if (qdt instanceof DBIntegerEnum) {
 //			return new DBIntegerEnumField(example, (DBIntegerEnum) qdt);
@@ -60,22 +61,22 @@ class DBRowPropertyField {
 //			return new DBLargeBinaryField<A>(example, (DBLargeBinary) qdt);
 		} else if (qdt instanceof DBLocalDate) {
 			DBLocalDate localQDT = (DBLocalDate) qdt;
-			return (C) new DatePicker(
-					prop.columnName(),
+			returnField= (C) new DatePicker(
+					prop.javaName(),
 					new QDTValueChangeListener(localQDT)
 			);
 		} else if (qdt instanceof DBLocalDateTime) {
 			DBLocalDateTime localQDT = (DBLocalDateTime) qdt;
-			return (C) new DateTimePicker(
-					prop.columnName(),
+			returnField= (C) new DateTimePicker(
+					prop.javaName(),
 					new QDTValueChangeListener(localQDT)
 			);
 //		} else if (qdt instanceof DBNumberStatistics) {
 //			return new DBNumberStatisticsField<A>(example, (DBNumberStatistics) qdt);
 		} else if (qdt instanceof DBPasswordHash) {
 			DBPasswordHash stringQDT = (DBPasswordHash) qdt;
-			return (C) new DBStringField(
-					prop.columnName(),
+			returnField= (C) new DBStringField(
+					prop.javaName(),
 					new QDTValueChangeListener(stringQDT)
 			);
 //			return new DBPasswordHashField<A>(example, (DBPasswordHash) qdt);
@@ -111,14 +112,18 @@ class DBRowPropertyField {
 		} else //		if (qdt instanceof DBString) 
 		{
 			DBString stringQDT = (DBString) qdt;
-			return (C) new DBStringField(
-					prop.columnName(),
+			returnField= (C) new DBStringField(
+					prop.javaName(),
 					new QDTValueChangeListener(stringQDT)
 			);
 //		} // and a default handler for all those ones I've forgotten
 //		else {
 //			return new DefaultDBRowPropertyField(example, qdt);
 		}
+		if (prop.isPrimaryKey()){
+			returnField.setReadOnly(true);
+		}
+		return returnField;
 	}
 
 	static <T> AbstractField<?, T> getEditor(DBRow example, QueryableDatatype<T> qdt) {
