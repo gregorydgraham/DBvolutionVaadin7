@@ -300,23 +300,23 @@ public class DBIntegerField extends AbstractNumberField<DBIntegerField, Long> {
 		// Using Locale.ENGLISH to keep format independent of JVM locale
 		// settings. The value property always uses period as the decimal
 		// separator regardless of the browser locale.
-		private final NumberFormat decimalFormat = CompactNumberFormat.getCurrencyInstance(Locale.ENGLISH);
+		private final NumberFormat format = CompactNumberFormat.getIntegerInstance(Locale.ENGLISH);
 
 		private Formatter() {
-			decimalFormat.setMaximumFractionDigits(Integer.MAX_VALUE);
+			format.setMaximumFractionDigits(0);
 		}
 
 		@Override
 		public String apply(Long valueFromModel) {
 			return valueFromModel == null ? ""
-					: decimalFormat.format(valueFromModel.doubleValue());
+					: format.format(valueFromModel.doubleValue());
 		}
 
 		private Long parse(String valueFromClient) {
 			try {
 				return valueFromClient == null || valueFromClient.isEmpty()
 						? null
-						: decimalFormat.parse(valueFromClient).longValue();
+						: format.parse(valueFromClient).longValue();
 			} catch (ParseException e) {
 				throw new NumberFormatException(valueFromClient);
 			}
