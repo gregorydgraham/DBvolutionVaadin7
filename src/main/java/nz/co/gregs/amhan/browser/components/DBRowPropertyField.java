@@ -41,7 +41,7 @@ class DBRowPropertyField {
 		if (qdt instanceof DBInstant) {
 			DBInstant stringQDT = (DBInstant) qdt;
 			final DBInstantField dateTimePicker = new DBInstantField(
-					stringQDT.stringValue(),
+					prop.javaName(),
 					new QDTValueChangeListener(stringQDT)
 			);
 			returnField= (C) dateTimePicker;
