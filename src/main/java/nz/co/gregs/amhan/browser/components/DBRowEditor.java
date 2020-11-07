@@ -5,9 +5,7 @@
  */
 package nz.co.gregs.amhan.browser.components;
 
-import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -27,7 +25,7 @@ import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
  * @author gregorygraham
  * @param <ROW>
  */
-public class DBRowEditor<ROW extends DBRow> extends Div {
+public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNotifier<ROW> {
 
 	private final DBDatabase database;
 	private final ROW row;
@@ -86,10 +84,6 @@ public class DBRowEditor<ROW extends DBRow> extends Div {
 		formLayout.add(editor);
 	}
 
-	private void initButtons() {
-		initButtons(e -> saveTheRow());
-	}
-
 	private void saveTheRow() {
 		try {
 			Notification.show("Saving...");
@@ -102,6 +96,10 @@ public class DBRowEditor<ROW extends DBRow> extends Div {
 		}
 	}
 
+	private void initButtons() {
+		initButtons(e -> saveTheRow());
+	}
+
 	private void initButtons(ComponentEventListener<ClickEvent<Button>> saveListener) {
 		initButtons(saveListener, e -> {
 			clearForm();
@@ -111,6 +109,9 @@ public class DBRowEditor<ROW extends DBRow> extends Div {
 	private void initButtons(ComponentEventListener<ClickEvent<Button>> saveListener, ComponentEventListener<ClickEvent<Button>> cancelListener) {
 		save.addClickListener(saveListener);
 		cancel.addClickListener(cancelListener);
+		save.addClickListener((e)->{
+			tellObserversOfSaveEvent();
+		});
 	}
 
 	public void clearForm() {
@@ -123,5 +124,9 @@ public class DBRowEditor<ROW extends DBRow> extends Div {
 
 	public ROW getRow() {
 		return row;
+	}
+
+	private void tellObserversOfSaveEvent() {
+		fireEvent(new DBRowUpdatedEvent<>(this));
 	}
 }

@@ -28,11 +28,13 @@ import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 public class DBTableGrid<ROW extends DBRow> extends Grid<ROW> {
 
 	private final DBDatabase database;
+	private final ROW example;
 
 	@SuppressWarnings("unchecked")
 	public DBTableGrid(DBDatabase db, ROW example) {
 		super((Class<ROW>) example.getClass(), false);
 		this.database = db;
+		this.example = example;
 		setDefaultColumns(example);
 		setItemsToDefaultSelection(example);
 		setDefaultTheme();
@@ -85,6 +87,11 @@ public class DBTableGrid<ROW extends DBRow> extends Grid<ROW> {
 							.setResizable(true);
 				}
 		);
+	}
+
+	public void refreshItem(ROW updatedRow) {
+		setItemsToAllRows(example);
+		this.select(updatedRow);
 	}
 
 }

@@ -1,6 +1,7 @@
 package nz.co.gregs.amhan.browser.views.selecttable;
 
 import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.ComponentEventListener;
 import nz.co.gregs.amhan.browser.components.DBRowEditor;
 import nz.co.gregs.amhan.browser.grid.DBTableGrid;
 import nz.co.gregs.amhan.browser.data.Database;
@@ -23,6 +24,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nz.co.gregs.amhan.browser.components.DBRowUpdateNotifier;
 import nz.co.gregs.dbvolution.DBRow;
 
 @Route(value = "showrows", layout = MainView.class)
@@ -35,7 +37,7 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 	private String className;
 	private DBRow example;
 
-	private Grid<DBRow> grid;
+	private DBTableGrid<DBRow> grid;
 	private Binder<DBRow> binder;
 	private Div wrapper;
 	private Div secondaryPaneContents;
@@ -77,20 +79,27 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 	@SuppressWarnings("unchecked")
 	private void configureFormAfterValueChangeEvent(final DBRow oldValue, AbstractField.ComponentValueChangeEvent<Grid<DBRow>, DBRow> event) {
 		DBRow newValue = event.getValue();
+		if (newValue != null) {
+			binder = new Binder<DBRow>((Class<DBRow>) newValue.getClass());
 
-		binder = new Binder<DBRow>((Class<DBRow>) newValue.getClass());
-
-		if (secondaryPaneContents != null) {
-			splitLayout.remove(secondaryPaneContents);
+			if (secondaryPaneContents != null) {
+				splitLayout.remove(secondaryPaneContents);
+			}
+			secondaryPaneContents = createEditorLayout(newValue, binder);
+			splitLayout.addToSecondary(secondaryPaneContents);
+			populateForm(event.getValue());
 		}
-		secondaryPaneContents = createEditorLayout(newValue, binder);
-		splitLayout.addToSecondary(secondaryPaneContents);
-		populateForm(event.getValue());
 	}
 
 	private Div createEditorLayout(DBRow row, Binder<DBRow> binder) {
 
 		final DBRowEditor<DBRow> rowEditor = new DBRowEditor<>(database, row, binder);
+		rowEditor.addDBRowUpdatedListener(new ComponentEventListener<DBRowUpdateNotifier.DBRowUpdatedEvent<DBRow>>() {
+			@Override
+			public void onComponentEvent(DBRowUpdateNotifier.DBRowUpdatedEvent<DBRow> event) {
+				grid.refreshItem(event.getUpdatedRow());
+			}
+		});
 		return rowEditor;
 	}
 
