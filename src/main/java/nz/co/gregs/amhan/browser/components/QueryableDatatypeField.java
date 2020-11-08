@@ -62,8 +62,7 @@ class QueryableDatatypeField {
 //		} else if (qdt instanceof DBNumberStatistics) {
 //			return new DBNumberStatisticsField<A>(example, (DBNumberStatistics) qdt);
 		} else if (qdt instanceof DBPasswordHash) {
-			returnField = (C) DBStringField.getField((PropertyWrapper<String, DBString>) prop);
-//			return new DBPasswordHashField<A>(example, (DBPasswordHash) qdt);
+			returnField = (C) DBPasswordHashField.getField((PropertyWrapper<String, DBPasswordHash>) prop);
 //		} else if (qdt instanceof DBStatistics) {
 //			return new DBStatisticsField(example, (DBStatistics) qdt);
 //		} else 
@@ -74,8 +73,8 @@ class QueryableDatatypeField {
 //					(field,newValue)->{((DBStringEnum<Enum<E>>) qdt).setValue(newLiteralValue);}
 //			);
 //			return new DBStringEnumField(example, (DBStringEnum) qdt);
-//		} else if (qdt instanceof DBStringTrimmed) {
-//			return new DBStringTrimmedField<A>(example, (DBStringTrimmed) qdt);
+		} else if (qdt instanceof DBStringTrimmed) {
+			returnField = (C) DBStringField.getField((PropertyWrapper<String, DBString>) prop);
 //		} else if (qdt instanceof DBUUID) {
 //			return new DBUUIDField<A>(example, (DBUUID) qdt);
 //		} else if (qdt instanceof DBUnknownDatatype) {
@@ -91,8 +90,8 @@ class QueryableDatatypeField {
 //			return new DBLargeTextField<A>(example, (DBLargeText) qdt);
 //		} else if (qdt instanceof DBLargeObject) {
 //			return new DBLargeObjectField(example, (DBLargeObject) qdt);
-//		} else if (qdt instanceof DBNumber) {
-//			return new DBNumberField<A>(example, (DBNumber) qdt);
+		} else if (qdt instanceof DBNumber) {
+			returnField = (C) DBNumberField.getField((PropertyWrapper<Number, DBNumber>) prop);
 		} else //		if (qdt instanceof DBString) 
 		{
 			returnField = (C) DBStringField.getField((PropertyWrapper<String, DBString>) prop);

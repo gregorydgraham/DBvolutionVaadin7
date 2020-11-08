@@ -74,7 +74,7 @@ public class DBStringField extends TextField {
 	 * @see #setLabel(String)
 	 * @see #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
 	 */
-	private DBStringField(String label, ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
+	protected DBStringField(String label, ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
 		super(label, listener);
 	}
 

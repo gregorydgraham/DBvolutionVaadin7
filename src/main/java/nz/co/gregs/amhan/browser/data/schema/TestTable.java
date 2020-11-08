@@ -30,7 +30,7 @@ public class TestTable extends DBRow {
 	DBInteger userID = new DBInteger();
 
 	@DBColumn
-	DBBoolean read = new DBBoolean().setDefaultInsertValue(Boolean.FALSE);
+	DBBoolean hasBeenRead = new DBBoolean().setDefaultInsertValue(Boolean.FALSE);
 
 	@DBColumn
 	DBInstant timePosted = new DBInstant().setDefaultInsertValueToNow();
@@ -43,6 +43,12 @@ public class TestTable extends DBRow {
 
 	@DBColumn
 	DBString text = new DBString();
+
+	@DBColumn
+	DBStringTrimmed trimmedText = new DBStringTrimmed();
+
+	@DBColumn
+	DBNumber rating = new DBNumber();
 
 	public TestTable() {
 	}
@@ -67,13 +73,23 @@ public class TestTable extends DBRow {
 		return this;
 	}
 	
-	public TestTable notRead(){
-		this.read.setValue(false);
+	public TestTable withTrimmedText(String text){
+		this.trimmedText.setValue(text);
 		return this;
 	}
 	
-	public TestTable read(){
-		this.read.setValue(true);
+	public TestTable withRating(Number rating){
+		this.rating.setValue(rating);
+		return this;
+	}
+	
+	public TestTable hasNotBeenRead(){
+		this.hasBeenRead.setValue(false);
+		return this;
+	}
+	
+	public TestTable hasBeenRead(){
+		this.hasBeenRead.setValue(true);
 		return this;
 	}
 	

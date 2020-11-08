@@ -55,8 +55,8 @@ public class DataLoader {
 				);
 		
 		db.insert(
-				new TestTable().withOwner(alice).postedAt(Instant.now()).withText("Great website").read(),
-				new TestTable().withOwner(alice).withText("Is anyone else here?").notRead()
+				new TestTable().withOwner(alice).postedAt(Instant.now()).withText("Great website").hasBeenRead().withTrimmedText("  no spaces here   ").withRating(2.056),
+				new TestTable().withOwner(alice).withText("Is anyone else here?").hasNotBeenRead().withRating(-1.53)
 				);
 	}
 
