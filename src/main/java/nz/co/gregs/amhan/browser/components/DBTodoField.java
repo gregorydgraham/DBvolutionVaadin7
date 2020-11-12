@@ -7,28 +7,27 @@ package nz.co.gregs.amhan.browser.components;
 
 import com.vaadin.flow.component.textfield.TextField;
 import nz.co.gregs.dbvolution.DBRow;
-import nz.co.gregs.dbvolution.datatypes.DBPasswordHash;
+import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
 
 /**
  *
  * @author gregorygraham
  * @param <ROW>
  */
-public class DBPasswordHashField<ROW extends DBRow> extends QueryableDatatypeField<ROW, String, DBPasswordHash> {
+public class DBTodoField<ROW extends DBRow> extends QueryableDatatypeField<ROW, Object, QueryableDatatype<Object>> {
 
 	TextField field = new TextField();
 
-	public DBPasswordHashField(ROW row, DBPasswordHash qdt) {
+	public DBTodoField(ROW row, QueryableDatatype<Object> qdt) {
 		super("", row, qdt);
 		field.setLabel(getLabel());
-		field.setValue(qdt.getValue());
-		field.addValueChangeListener(e -> updateQDT(e));
+		field.addValueChangeListener(e -> updateQDT(e.getValue()));
 		add(field);
 	}
 
 	@Override
-	protected void setPresentationValue(String newPresentationValue) {
-		field.setValue(newPresentationValue);
+	protected void setPresentationValue(Object newPresentationValue) {
+		field.setValue(newPresentationValue != null ? newPresentationValue.toString() : null);
 	}
 
 }

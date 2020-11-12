@@ -6,22 +6,33 @@
 package nz.co.gregs.amhan.browser.components;
 
 import com.vaadin.flow.component.checkbox.Checkbox;
+import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBBoolean;
-import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 
 /**
  *
  * @author gregorygraham
+ * @param <ROW>
  */
-public class DBBooleanField extends Checkbox{
+public class DBBooleanField<ROW extends DBRow> extends QueryableDatatypeField<ROW, Boolean, DBBoolean> {
 
-	
-	public static DBBooleanField getField(PropertyWrapper<Boolean, DBBoolean>prop){
-		return new DBBooleanField(prop.javaName(),new QDTValueChangeListener<>(prop.getQueryableDatatype()));
+	Checkbox checkBox = new Checkbox();
+
+	public static <ROW extends DBRow> DBBooleanField<ROW> getField(ROW row, DBBoolean qdt) {
+		return new DBBooleanField<>(row, qdt);
 	}
 
-	private DBBooleanField(String label, ValueChangeListener<ComponentValueChangeEvent<Checkbox, Boolean>> listener) {
-		super(label, listener);
+	private DBBooleanField(ROW row, DBBoolean qdt) {
+		super(Boolean.FALSE, row, qdt);
+		checkBox.setLabel(getLabel());
+		checkBox.setValue(qdt.getValue()==null?null:qdt.getValue());
+		checkBox.addValueChangeListener(event -> updateQDT(event));
+		add(checkBox);
 	}
-	
+
+	@Override
+	protected void setPresentationValue(Boolean newPresentationValue) {
+		checkBox.setValue(newPresentationValue);
+	}
+
 }

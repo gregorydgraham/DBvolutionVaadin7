@@ -6,90 +6,29 @@
 package nz.co.gregs.amhan.browser.components;
 
 import com.vaadin.flow.component.textfield.TextField;
+import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBString;
-import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 
 /**
  *
  * @author gregorygraham
+ * @param <ROW>
  */
-public class DBStringField extends TextField {
-	
-	public static DBStringField getField(PropertyWrapper<String, DBString> prop){
-		return new DBStringField(prop.javaName(),new QDTValueChangeListener<>(prop.getQueryableDatatype()));
+public class DBStringField<ROW extends DBRow> extends QueryableDatatypeField<ROW, String, DBString> {
+
+	TextField field = new TextField();
+
+	public DBStringField(ROW row, DBString qdt) {
+		super("", row, qdt);
+		field.setLabel(getLabel());
+		field.setValue(qdt.getValueOptional().orElse(""));
+		field.addValueChangeListener(e -> updateQDT(e));
+		add(field);
 	}
 
-	/**
-	 * Constructs an empty {@code TextField}.
-	 */
-	private DBStringField() {
-		super();
+	@Override
+	protected void setPresentationValue(String newPresentationValue) {
+		field.setValue(newPresentationValue.isEmpty()?null:newPresentationValue);
 	}
 
-	/**
-	 * Constructs an empty {@code TextField} with the given label.
-	 * @param label the text to set as the label
-	 */
-	private DBStringField(String label) {
-		super(label);
-	}
-
-	/**
-	 * Constructs an empty {@code TextField} with the given label and
-	 * placeholder text.
-	 * @param label the text to set as the label
-	 * @param placeholder the placeholder text to set
-	 */
-	private DBStringField(String label, String placeholder) {
-		super(label, placeholder);
-	}
-
-	/**
-	 * Constructs a {@code TextField} with the given label, an initial value and
-	 * placeholder text.
-	 * @param label the text to set as the label
-	 * @param initialValue the initial value
-	 * @param placeholder the placeholder text to set
-	 * @see #setValue(Object)
-	 * @see #setPlaceholder(String)
-	 */
-	private DBStringField(String label, String initialValue, String placeholder) {
-		super(label, initialValue==null?"":initialValue, placeholder);
-	}
-
-	/**
-	 * Constructs an empty {@code TextField} with a value change listener.
-	 * @param listener the value change listener
-	 * @see #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
-	 */
-	private DBStringField(ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
-		super(listener);
-	}
-
-	/**
-	 * Constructs an empty {@code TextField} with a label and a value change
-	 * listener.
-	 * @param label the text to set as the label
-	 * @param listener the value change listener
-	 * @see #setLabel(String)
-	 * @see #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
-	 */
-	protected DBStringField(String label, ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
-		super(label, listener);
-	}
-
-	/**
-	 * Constructs an empty {@code TextField} with a label,a value change
-	 * listener and an initial value.
-	 * @param label the text to set as the label
-	 * @param initialValue the initial value
-	 * @param listener the value change listener
-	 * @see #setLabel(String)
-	 * @see #setValue(Object)
-	 * @see #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
-	 */
-	private DBStringField(String label, String initialValue, ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
-		super(label, initialValue==null?"":initialValue, listener);
-	}
-	
 }

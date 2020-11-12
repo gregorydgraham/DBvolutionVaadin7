@@ -7,21 +7,29 @@ package nz.co.gregs.amhan.browser.components;
 
 import com.vaadin.flow.component.datepicker.DatePicker;
 import java.time.LocalDate;
+import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBLocalDate;
-import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 
 /**
  *
  * @author gregorygraham
+ * @param <ROW>
  */
-public class DBLocalDateField extends DatePicker{
+public class DBLocalDateField<ROW extends DBRow> extends QueryableDatatypeField<ROW, LocalDate, DBLocalDate> {
 
-	private DBLocalDateField(String label, ValueChangeListener<ComponentValueChangeEvent<DatePicker, LocalDate>> listener) {
-		super(label, listener);
+	DatePicker picker = new DatePicker();
+
+	public DBLocalDateField(ROW row, DBLocalDate qdt) {
+		super(LocalDate.now(), row, qdt);
+		picker.setLabel(getLabel());
+		picker.setValue(qdt.getValue());
+		picker.addValueChangeListener(e->updateQDT(e));
+		add(picker);
 	}
-	
-	public static DBLocalDateField getField(PropertyWrapper<LocalDate, DBLocalDate> prop){
-		return new DBLocalDateField(prop.javaName(),new QDTValueChangeListener<>(prop.getQueryableDatatype()));
+
+	@Override
+	protected void setPresentationValue(LocalDate newPresentationValue) {
+		picker.setValue(newPresentationValue);
 	}
-	
+
 }

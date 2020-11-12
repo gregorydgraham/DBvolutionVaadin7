@@ -23,28 +23,28 @@ public class QDTComponentsBound<ROW extends DBRow, TYPE> {
 
 	private final String columnName;
 	private final String propertyName;
-	private final AbstractField<?, TYPE> editor;
+	private final QueryableDatatypeField<ROW, TYPE, ?> editor;
 	private final QueryableDatatypeValueProvider<ROW, TYPE, ? extends QueryableDatatype<TYPE>> valueProvider;
 	private final QueryableDatatypeSetter<ROW, TYPE, ? extends QueryableDatatype<TYPE>> setter;
 
 	@SuppressWarnings(value = "unchecked")
 	public static <R extends DBRow, T, Q extends QueryableDatatype<T>> QDTComponentsBound<R, T> getFor(R row, Q field, Binder<R> binder) {
 		QDTComponentsBound qdtComponents = new QDTComponentsBound(row, field);
-		final AbstractField editor = qdtComponents.getEditor();
+		final QueryableDatatypeField editor = qdtComponents.getEditor();
 		binder.bind(editor, qdtComponents.getValueProvider(), qdtComponents.getSetter());
 		return qdtComponents;
 	}
 
 	private <QDT extends QueryableDatatype<TYPE>> QDTComponentsBound(ROW row, QDT field) {
-		editor = QueryableDatatypeField.getField(row, field);
+		editor = QueryableDatatypeField.getFieldForRowAndQDT(row, field);
 		valueProvider = QueryableDatatypeValueProvider.getValueProvider(row, field);
 		setter = QueryableDatatypeSetter.getSetter(row, field);
-		PropertyWrapper<?, ?> property = row.getPropertyWrapperOf(field);
+		PropertyWrapper<?, ?, ?> property = row.getPropertyWrapperOf(field);
 		columnName = property.columnName();
 		propertyName = property.javaName();
 	}
 
-	public AbstractField<?, TYPE> getEditor() {
+	public QueryableDatatypeField<ROW, TYPE, ?> getEditor() {
 		return editor;
 	}
 

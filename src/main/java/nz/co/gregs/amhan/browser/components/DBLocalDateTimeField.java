@@ -7,21 +7,28 @@ package nz.co.gregs.amhan.browser.components;
 
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import java.time.LocalDateTime;
+import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBLocalDateTime;
-import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 
 /**
  *
  * @author gregorygraham
+ * @param <ROW>
  */
-public class DBLocalDateTimeField extends DateTimePicker{
+public class DBLocalDateTimeField<ROW extends DBRow> extends QueryableDatatypeField<ROW, LocalDateTime, DBLocalDateTime> {
 
-	private DBLocalDateTimeField(String label, ValueChangeListener<ComponentValueChangeEvent<DateTimePicker, LocalDateTime>> listener) {
-		super(label, listener);
+	DateTimePicker picker = new DateTimePicker();
+
+	public DBLocalDateTimeField(ROW row, DBLocalDateTime qdt) {
+		super(LocalDateTime.now(), row, qdt);
+		picker.setLabel(getLabel());
+		picker.setValue(qdt.getValue());
+		picker.addValueChangeListener(e->updateQDT(e));
+		add(picker);
 	}
-	
-	public static DBLocalDateTimeField getField(PropertyWrapper<LocalDateTime, DBLocalDateTime> prop){
-		return new DBLocalDateTimeField(prop.javaName(),new QDTValueChangeListener<>(prop.getQueryableDatatype()));
+
+	@Override
+	protected void setPresentationValue(LocalDateTime newPresentationValue) {
+		picker.setValue(newPresentationValue);
 	}
-	
 }

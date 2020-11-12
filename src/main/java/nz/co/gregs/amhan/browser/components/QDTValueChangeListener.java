@@ -5,25 +5,27 @@
  */
 package nz.co.gregs.amhan.browser.components;
 
-import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.HasValue;
 import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
 
 /**
  *
  * @author gregorygraham
+ * @param <BASETYPE>
  */
-class QDTValueChangeListener<F extends AbstractField<F, A>, A> implements HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<F, A>> {
-	
-	private final QueryableDatatype<A> qdt;
+@Deprecated
+public class QDTValueChangeListener<BASETYPE> implements HasValue.ValueChangeListener<HasValue.ValueChangeEvent<BASETYPE>>{
 
-	public QDTValueChangeListener(QueryableDatatype<A> queryabledatatype) {
-		this.qdt = queryabledatatype;
+	private final QueryableDatatype<BASETYPE> qdt;
+
+	public QDTValueChangeListener(QueryableDatatype<BASETYPE> qdt) {
+		this.qdt = qdt;
 	}
 
 	@Override
-	public void valueChanged(AbstractField.ComponentValueChangeEvent<F, A> a) {
-		qdt.setValue(a.getValue());
+	public void valueChanged(HasValue.ValueChangeEvent<BASETYPE> event) {
+		System.out.println("QDTValueChangeListener - SET QDT VALUE TO: "+event.getValue());
+		qdt.setValue(event.getValue());
 	}
 	
 }

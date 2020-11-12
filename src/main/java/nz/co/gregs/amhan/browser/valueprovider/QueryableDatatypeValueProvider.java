@@ -64,7 +64,7 @@ public class QueryableDatatypeValueProvider<ROW extends DBRow, TYPE, QDT extends
 		this(example.getPropertyWrapperOf(qdt));
 	}
 
-	private QueryableDatatypeValueProvider(PropertyWrapper<TYPE, QDT> wrapper) {
+	private QueryableDatatypeValueProvider(PropertyWrapper<ROW, TYPE, QDT> wrapper) {
 		setInternalPropertyWrapper(wrapper);
 	}
 

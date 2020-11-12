@@ -63,10 +63,6 @@ public class DBTableGrid<ROW extends DBRow> extends Grid<ROW> {
 		final List<ROW> allRows;
 		try {
 			allRows = database.getDBTable(example).setBlankQueryAllowed(true).getAllRows();
-			allRows.stream().forEach((value) -> {
-				System.out.println("FOUND ROW: " + value);
-				System.out.println("IS DEFINED:" + value.getDefined());
-			});
 			setItems(allRows);
 		} catch (SQLException | AccidentalCartesianJoinException | AccidentalBlankQueryException ex) {
 			Logger.getLogger(DBTableGrid.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,7 +71,7 @@ public class DBTableGrid<ROW extends DBRow> extends Grid<ROW> {
 
 	public final <A extends Object> void setDefaultColumns(ROW example) {
 		setColumns();
-		List<PropertyWrapper<?, ?>> wrapper = example.getColumnPropertyWrappers();
+		List<PropertyWrapper<?, ?, ?>> wrapper = example.getColumnPropertyWrappers();
 		wrapper.forEach(
 				prop -> {
 					final RowPropertyComparator<ROW> rowPropertyComparator = new RowPropertyComparator<ROW>(example, prop.getQueryableDatatype());

@@ -10,6 +10,7 @@ import nz.co.gregs.amhan.browser.data.schema.Comments;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.UUID;
 import nz.co.gregs.amhan.browser.data.schema.TestTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +28,12 @@ public class DataLoader {
 	public CommandLineRunner loadDatabase(Database dbRepository) {
 		return args -> {
 			Logger logger = LoggerFactory.getLogger(getClass());
-				// all of this could possibly be done in the Database constructor
-				// but this does avoid any issues with unfinished initialisation
-				setData(dbRepository);
+			// all of this could possibly be done in the Database constructor
+			// but this does avoid any issues with unfinished initialisation
+			setData(dbRepository);
 
 			logger.info("Generated demo database schema");
-				return;
+			return;
 		};
 	}
 
@@ -41,24 +42,34 @@ public class DataLoader {
 		db.createTable(new Comments());
 		db.createTable(new TestTable());
 		final BrowserUser alice = new BrowserUser("alice", "password");
-		
+
 		db.insert(alice,
 				new BrowserUser("bart5", "password"),
 				new BrowserUser("cindy", "password"),
 				new BrowserUser("denny", "password"),
 				new BrowserUser("eruditeOtter", "shibboleth")
-				);
-		
+		);
+
 		db.insert(
 				new Comments().withOwner(alice).postedAt(Instant.now()).withText("Great website"),
 				new Comments().withOwner(alice).withText("Is anyone else here?")
-				);
-		
-		db.insert(
-				new TestTable().withOwner(alice).postedAt(Instant.now()).withText("Great website").hasBeenRead().withTrimmedText("  no spaces here   ").withRating(2.056),
-				new TestTable().withOwner(alice).withText("Is anyone else here?").hasNotBeenRead().withRating(-1.53)
-				);
-	}
+		);
 
+		db.insert(
+				new TestTable()
+						.withOwner(alice)
+						.postedAt(Instant.now())
+						.withText("Great website")
+						.hasBeenRead()
+						.withTrimmedText("  no spaces here   ")
+						.withRating(2.056)
+						.withUniqueIdentifier(UUID.randomUUID()),
+				new TestTable()
+						.withOwner(alice)
+						.withText("Is anyone else here?")
+						.hasNotBeenRead()
+						.withRating(-1.53)
+		);
+	}
 
 }

@@ -7,6 +7,7 @@ package nz.co.gregs.amhan.browser.data.schema;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.annotations.DBAutoIncrement;
 import nz.co.gregs.dbvolution.annotations.DBColumn;
@@ -50,6 +51,9 @@ public class TestTable extends DBRow {
 	@DBColumn
 	DBNumber rating = new DBNumber();
 
+	@DBColumn
+	DBUUID uniqueIdentifier = new DBUUID().setDefaultInsertValueRandomly();
+
 	public TestTable() {
 	}
 	
@@ -90,6 +94,11 @@ public class TestTable extends DBRow {
 	
 	public TestTable hasBeenRead(){
 		this.hasBeenRead.setValue(true);
+		return this;
+	}
+	
+	public TestTable withUniqueIdentifier(UUID uuid){
+		this.uniqueIdentifier.setValue(uuid);
 		return this;
 	}
 	

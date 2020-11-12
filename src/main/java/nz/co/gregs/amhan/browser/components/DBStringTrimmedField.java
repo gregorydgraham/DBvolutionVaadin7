@@ -6,29 +6,29 @@
 package nz.co.gregs.amhan.browser.components;
 
 import com.vaadin.flow.component.textfield.TextField;
+import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBStringTrimmed;
-import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 
 /**
  *
  * @author gregorygraham
+ * @param <ROW>
  */
-public class DBStringTrimmedField extends TextField {
-	
-	/**
-	 * Constructs an empty {@code TextField} with a label and a value change
-	 * listener.
-	 * @param label the text to set as the label
-	 * @param listener the value change listener
-	 * @see #setLabel(String)
-	 * @see #addValueChangeListener(com.vaadin.flow.component.HasValue.ValueChangeListener)
-	 */
-	public DBStringTrimmedField(String label, ValueChangeListener<? super ComponentValueChangeEvent<TextField, String>> listener) {
-		super(label, listener);
+public class DBStringTrimmedField<ROW extends DBRow> extends QueryableDatatypeField<ROW, String, DBStringTrimmed> {
+
+	TextField field = new TextField();
+
+	public DBStringTrimmedField(ROW row, DBStringTrimmed qdt) {
+		super("", row, qdt);
+		field.setLabel(getLabel());
+		field.setValue(qdt.getValueOptional().orElse(""));
+		field.addValueChangeListener(e->updateQDT(e));
+		add(field);
 	}
-	
-	public static DBStringTrimmedField getField(PropertyWrapper<String, DBStringTrimmed> prop){
-		return new DBStringTrimmedField(prop.javaName(),new QDTValueChangeListener<>(prop.getQueryableDatatype()));
+
+	@Override
+	protected void setPresentationValue(String newPresentationValue) {
+		field.setValue(newPresentationValue);
 	}
-	
+
 }

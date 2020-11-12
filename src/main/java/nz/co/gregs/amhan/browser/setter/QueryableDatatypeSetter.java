@@ -8,7 +8,6 @@ package nz.co.gregs.amhan.browser.setter;
 import com.vaadin.flow.data.binder.Setter;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
-import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
 import nz.co.gregs.dbvolution.internal.properties.PropertyWrapperDefinition;
 
 /**
@@ -21,18 +20,23 @@ import nz.co.gregs.dbvolution.internal.properties.PropertyWrapperDefinition;
 public class QueryableDatatypeSetter<ROW extends DBRow, TYPE, QDT extends QueryableDatatype<TYPE>> implements Setter<ROW, TYPE> {
 
 	private final PropertyWrapperDefinition wrapper;
+	private final DBRow row;
+	private final QDT qdt;
 
 	protected QueryableDatatypeSetter(DBRow example, QDT qdt) {
-		this(example.getPropertyWrapperOf(qdt));
+		this.row = example;
+		this.qdt = qdt;
+		this.wrapper = row.getPropertyWrapperOf(this.qdt).getPropertyWrapperDefinition();
+//		this(example.getPropertyWrapperOf(qdt));
 	}
 
-	protected QueryableDatatypeSetter(PropertyWrapper wrapper) {
-		this(wrapper.getPropertyWrapperDefinition());
-	}
+//	protected QueryableDatatypeSetter(PropertyWrapper wrapper) {
+//		this(wrapper.getPropertyWrapperDefinition());
+//	}
 
-	protected QueryableDatatypeSetter(PropertyWrapperDefinition wrapper) {
-		this.wrapper = wrapper;
-	}
+//	protected QueryableDatatypeSetter(PropertyWrapperDefinition wrapper) {
+//		this.wrapper = wrapper;
+//	}
 
 	public PropertyWrapperDefinition getWrapper() {
 		return wrapper;
@@ -49,9 +53,9 @@ public class QueryableDatatypeSetter<ROW extends DBRow, TYPE, QDT extends Querya
 		return new QueryableDatatypeSetter<A, T, Q>(example, qdt);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <A extends DBRow, T, Q extends QueryableDatatype<T>> QueryableDatatypeSetter<A, T, Q> getSetter(PropertyWrapper<?,?> propertyWrapper) {
-		return new QueryableDatatypeSetter<A, T, Q>(propertyWrapper);
-	}
+//	@SuppressWarnings("unchecked")
+//	public static <A extends DBRow, T, Q extends QueryableDatatype<T>> QueryableDatatypeSetter<A, T, Q> getSetter(PropertyWrapper<?, ?, ?> propertyWrapper) {
+//		return new QueryableDatatypeSetter<A, T, Q>(propertyWrapper);
+//	}
 
 }

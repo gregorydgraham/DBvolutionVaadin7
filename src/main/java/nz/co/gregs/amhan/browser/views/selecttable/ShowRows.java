@@ -94,12 +94,7 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 	private Div createEditorLayout(DBRow row, Binder<DBRow> binder) {
 
 		final DBRowEditor<DBRow> rowEditor = new DBRowEditor<>(database, row, binder);
-		rowEditor.addDBRowUpdatedListener(new ComponentEventListener<DBRowUpdateNotifier.DBRowUpdatedEvent<DBRow>>() {
-			@Override
-			public void onComponentEvent(DBRowUpdateNotifier.DBRowUpdatedEvent<DBRow> event) {
-				grid.refreshItem(event.getUpdatedRow());
-			}
-		});
+		rowEditor.addDBRowUpdatedListener(event -> grid.refreshItem(event.getUpdatedRow()));
 		return rowEditor;
 	}
 
