@@ -5,9 +5,7 @@
  */
 package nz.co.gregs.amhan.browser.components;
 
-import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.shared.Registration;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBNumber;
 
