@@ -28,7 +28,7 @@ public class DBLocalDateTimeField<ROW extends DBRow> extends QueryableDatatypeFi
 	}
 
 	@Override
-	protected void setPresentationValue(LocalDateTime newPresentationValue) {
+	protected final void setPresentationValue(LocalDateTime newPresentationValue) {
 		picker.setValue(newPresentationValue);
 	}
 }
