@@ -25,16 +25,16 @@ public class DBIntegerField<ROW extends DBRow> extends QueryableDatatypeField<RO
 
 	public DBIntegerField(ROW row, DBInteger qdt) {
 		super(0L, row, qdt);
+		setPresentationValue(qdt.getValue());
 		field.setLabel(getLabel());
-		field.setValue(qdt.getValue() == null ? null : qdt.getValue().intValue());
 		field.addValueChangeListener(
-				e -> updateQDT(e.getValue() != null ? e.getValue().longValue() : null)
+				e -> updateQDT(e.getValue() == null ? null : e.getValue().longValue())
 		);
 		add(field);
 	}
 
 	@Override
-	protected void setPresentationValue(Long newPresentationValue) {
+	protected final void setPresentationValue(Long newPresentationValue) {
 		if (newPresentationValue != null) {
 			field.setValue(newPresentationValue.intValue());
 		} else {

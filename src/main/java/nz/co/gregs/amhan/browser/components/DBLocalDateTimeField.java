@@ -21,8 +21,8 @@ public class DBLocalDateTimeField<ROW extends DBRow> extends QueryableDatatypeFi
 
 	public DBLocalDateTimeField(ROW row, DBLocalDateTime qdt) {
 		super(LocalDateTime.now(), row, qdt);
+		setPresentationValue(qdt.getValue());
 		picker.setLabel(getLabel());
-		picker.setValue(qdt.getValue());
 		picker.addValueChangeListener(e->updateQDT(e));
 		add(picker);
 	}

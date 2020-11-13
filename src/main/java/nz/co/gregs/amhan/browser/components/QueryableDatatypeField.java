@@ -102,6 +102,7 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 	private final ROW row;
 	private final QDT qdt;
 	private final PropertyWrapper<ROW, BASETYPE, QDT> prop;
+	private boolean currentlyReloading = false;
 
 	protected QueryableDatatypeField(BASETYPE defaultValue, ROW row, QDT qdt) {
 		super(defaultValue);
@@ -128,21 +129,31 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 //		super.setValue(value);
 //		tellObserversOfSetValueEvent();
 //	}
-
 	protected void updateQDT(ComponentValueChangeEvent<?, BASETYPE> e) {
 		System.out.println("QueryableDatatypeField.updateQDT(EVENT) - SET VALUE: " + e.getValue());
-		getQueryableDatatype().setValue(e.getValue());
-		tellObserversOfSetValueEvent();
+		updateQDT(e.getValue());
+//		getQueryableDatatype().setValue(e.getValue());
+//		tellObserversOfSetValueEvent();
 	}
 
 	protected void updateQDT(BASETYPE newValue) {
-		System.out.println("QueryableDatatypeField.updateQDT(BASETYPE,BASETYPE) - SET VALUE: " + newValue);
-		getQueryableDatatype().setValue(newValue);
-		tellObserversOfSetValueEvent();
+		if (!currentlyReloading) {
+			System.out.println("QueryableDatatypeField.updateQDT(BASETYPE,BASETYPE) - SET VALUE: " + newValue);
+			getQueryableDatatype().setValue(newValue);
+			tellObserversOfSetValueEvent();
+		}
 	}
 
 	private void tellObserversOfSetValueEvent() {
 		fireEvent(new QDTUpdateNotifier.Event<>(this));
+	}
+
+	public synchronized void reloadValue() {
+//		currentlyReloading=true;
+		System.out.println("RELOADING: " + prop.javaName());
+		setPresentationValue(getQueryableDatatype().getValue());
+		System.out.println("LOADED: " + getQueryableDatatype().getValue() == null ? "<NULL>" : getQueryableDatatype().getValue());
+//		currentlyReloading=false;
 	}
 
 }

@@ -20,13 +20,14 @@ public class DBUnknownDatatypeField<ROW extends DBRow> extends QueryableDatatype
 
 	public DBUnknownDatatypeField(ROW row, DBUnknownDatatype qdt) {
 		super("Unknown", row, qdt);
+		setPresentationValue(qdt.getValue());
 		add(textField);
 		textField.setLabel(getLabel());
 		textField.addValueChangeListener(e -> updateQDT(e.getValue()));
 	}
 
 	@Override
-	protected void setPresentationValue(Object newPresentationValue) {
+	protected final void setPresentationValue(Object newPresentationValue) {
 		if (newPresentationValue != null) {
 			textField.setValue(newPresentationValue.toString());
 		} else {

@@ -20,15 +20,15 @@ public class DBStringField<ROW extends DBRow> extends QueryableDatatypeField<ROW
 
 	public DBStringField(ROW row, DBString qdt) {
 		super("", row, qdt);
+		setPresentationValue(qdt.getValue());
 		field.setLabel(getLabel());
-		field.setValue(qdt.getValueOptional().orElse(""));
 		field.addValueChangeListener(e -> updateQDT(e));
 		add(field);
 	}
 
 	@Override
 	protected void setPresentationValue(String newPresentationValue) {
-		field.setValue(newPresentationValue.isEmpty()?null:newPresentationValue);
+		field.setValue(newPresentationValue.isEmpty()?"":newPresentationValue);
 	}
 
 }

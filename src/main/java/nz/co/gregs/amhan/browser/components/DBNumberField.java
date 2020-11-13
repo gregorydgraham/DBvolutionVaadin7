@@ -23,14 +23,14 @@ public class DBNumberField<ROW extends DBRow> extends QueryableDatatypeField<ROW
 
 	public DBNumberField(ROW row, DBNumber qdt) {
 		super(0D, row, qdt);
+		setPresentationValue(qdt.getValue());
 		field.setLabel(getLabel());
-		field.setValue(qdt.getValue() == null ? null : qdt.getValue().doubleValue());
 		field.addValueChangeListener(e -> updateQDT(e.getValue()));
 		add(field);
 	}
 
 	@Override
-	protected void setPresentationValue(Number newPresentationValue) {
+	protected final void setPresentationValue(Number newPresentationValue) {
 		field.setValue(newPresentationValue != null ? newPresentationValue.doubleValue() : null);
 	}
 

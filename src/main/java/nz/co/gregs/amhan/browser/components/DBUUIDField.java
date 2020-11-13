@@ -16,15 +16,15 @@ import nz.co.gregs.dbvolution.datatypes.DBUUID;
  * @author gregorygraham
  * @param <ROW>
  */
-public class DBUUIDField<ROW extends DBRow> extends QueryableDatatypeField<ROW, UUID, DBUUID> {
+public final class DBUUIDField<ROW extends DBRow> extends QueryableDatatypeField<ROW, UUID, DBUUID> {
 
 	private final TextField textField = new TextField();
 	Button button = new Button("<- UUID");
 
 	public DBUUIDField(ROW row, DBUUID qdt) {
 		super(null, row, qdt);
+		setPresentationValue(qdt.getValue());
 		textField.setLabel(getLabel());
-		textField.setValue(qdt.getValue() == null ? "" : qdt.getValue().toString());
 		textField.addValueChangeListener(
 				e -> updateQDT(changeToUUID(e.getValue())));
 		button.addClickListener(t -> textField.setValue(UUID.randomUUID().toString()));

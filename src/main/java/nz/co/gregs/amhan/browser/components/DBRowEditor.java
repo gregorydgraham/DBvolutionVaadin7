@@ -14,6 +14,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.binder.Binder;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +34,7 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 	private final Binder<ROW> binder;
 	private final Button cancel = new Button("Cancel");
 	private final Button save = new Button("Save");
+	private final List<QueryableDatatypeField> qdtFields = new ArrayList<>();
 	
 	public DBRowEditor(DBDatabase database, ROW forThisRow, Binder<ROW> andThisBinder) {
 		this.database = database;
@@ -41,7 +43,7 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 		
 		initButtons();
 		
-		createEditorLayout(andThisBinder, row);
+		createEditorLayout(binder, row);
 	}
 	
 	private void createEditorLayout(Binder<ROW> binder, ROW row) {
@@ -79,30 +81,18 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 		QDTComponentsBound<ROW, T> qdtComponent = QDTComponentsBound.getFor(row, qdt, binder);
 		final QueryableDatatypeField<ROW, T, ?> editor = qdtComponent.getEditor();
 		editor.getElement().getClassList().add("full-width");
+		qdtFields.add(editor);
 		formLayout.add(editor);
 	}
 	
 	private void saveTheRow() {
 		database.setPrintSQLBeforeExecuting(true);
-		row.getColumnPropertyWrappers().stream().forEach(p -> {
-			if (p.getQueryableDatatype().hasChanged()){
-				System.out.println(p.javaName()+"="+p.getQueryableDatatype().getValue()+": HAS CHANGED");
-			}else{;
-				System.out.println(p.javaName()+"="+p.getQueryableDatatype().getValue()+": same");
-			}
-		});
 		try {
 			Notification.show("Saving...");
 			final ROW row1 = getRow();
-			System.out.println("SAVING: " + row1);
 			database.update(row1);
-			System.out.println("SAVED: " + row1);
-			Notification.show("Save complete.");
-			final ROW primaryKeyExample = DBRow.getPrimaryKeyExample(row1);
-			System.out.println("QUERY WITH: " + row1);
-			ROW get = database.get(primaryKeyExample).get(0);
-			System.out.println("DATABASE VERSION: " + get);
-			Notification.show("Refresh complete.");
+			Notification.show("Saved.");
+			reloadFields();
 			tellObserversOfSaveEvent();
 		} catch (SQLException ex) {
 			Notification.show("SAVE FAILED: " + ex.getLocalizedMessage());
@@ -145,5 +135,9 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 	
 	private void tellObserversOfSaveEvent() {
 		fireEvent(new DBRowUpdatedEvent<>(this));
+	}
+
+	private void reloadFields() {
+		qdtFields.stream().forEach(f->f.reloadValue());
 	}
 }

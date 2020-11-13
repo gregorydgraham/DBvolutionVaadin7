@@ -27,8 +27,9 @@ public class DBInstantField<ROW extends DBRow> extends QueryableDatatypeField<RO
 
 	private DBInstantField(ROW row, DBInstant qdt) {
 		super(Instant.now(), row, qdt);
+		setPresentationValue(qdt.getValue());
 		picker.setLabel(getLabel());
-		picker.setValue(qdt.getValue() == null ? null : qdt.getValue().atZone(ZoneOffset.UTC).toLocalDateTime());
+//		picker.setValue(qdt.getValue() == null ? null : qdt.getValue().atZone(ZoneOffset.UTC).toLocalDateTime());
 		picker.addValueChangeListener(
 				e -> updateQDT(changeToInstant(e.getValue()))
 		);
@@ -36,9 +37,9 @@ public class DBInstantField<ROW extends DBRow> extends QueryableDatatypeField<RO
 	}
 
 	@Override
-	protected void setPresentationValue(Instant newPresentationValue) {
-		if (picker != null) {
-			picker.setValue(newPresentationValue.atZone(ZoneOffset.UTC).toLocalDateTime());
+	protected final void setPresentationValue(Instant newPresentationValue) {
+		if (newPresentationValue != null) {
+			picker.setValue(changeToLocalDateTime(newPresentationValue));
 		} else {
 			picker.clear();
 		}
@@ -46,5 +47,9 @@ public class DBInstantField<ROW extends DBRow> extends QueryableDatatypeField<RO
 
 	private Instant changeToInstant(LocalDateTime value) {
 		return value == null ? null : value.toInstant(ZoneOffset.UTC);
+	}
+
+	private LocalDateTime changeToLocalDateTime(Instant value) {
+		return value == null ? null : value.atZone(ZoneOffset.UTC).toLocalDateTime();
 	}
 }

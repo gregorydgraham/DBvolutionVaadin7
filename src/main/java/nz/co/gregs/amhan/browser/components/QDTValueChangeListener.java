@@ -24,7 +24,6 @@ public class QDTValueChangeListener<BASETYPE> implements HasValue.ValueChangeLis
 
 	@Override
 	public void valueChanged(HasValue.ValueChangeEvent<BASETYPE> event) {
-		System.out.println("QDTValueChangeListener - SET QDT VALUE TO: "+event.getValue());
 		qdt.setValue(event.getValue());
 	}
 	

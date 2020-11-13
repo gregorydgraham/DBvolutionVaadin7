@@ -24,14 +24,14 @@ public class DBBooleanField<ROW extends DBRow> extends QueryableDatatypeField<RO
 
 	private DBBooleanField(ROW row, DBBoolean qdt) {
 		super(Boolean.FALSE, row, qdt);
+		setPresentationValue(qdt.getValue());
 		checkBox.setLabel(getLabel());
-		checkBox.setValue(qdt.getValue()==null?null:qdt.getValue());
 		checkBox.addValueChangeListener(event -> updateQDT(event));
 		add(checkBox);
 	}
 
 	@Override
-	protected void setPresentationValue(Boolean newPresentationValue) {
+	protected final void setPresentationValue(Boolean newPresentationValue) {
 		checkBox.setValue(newPresentationValue);
 	}
 

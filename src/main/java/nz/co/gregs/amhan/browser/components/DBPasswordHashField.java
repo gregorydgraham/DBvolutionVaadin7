@@ -20,14 +20,14 @@ public class DBPasswordHashField<ROW extends DBRow> extends QueryableDatatypeFie
 
 	public DBPasswordHashField(ROW row, DBPasswordHash qdt) {
 		super("", row, qdt);
+		setPresentationValue(qdt.getValue());
 		field.setLabel(getLabel());
-		field.setValue(qdt.getValue());
 		field.addValueChangeListener(e -> updateQDT(e));
 		add(field);
 	}
 
 	@Override
-	protected void setPresentationValue(String newPresentationValue) {
+	protected final void setPresentationValue(String newPresentationValue) {
 		field.setValue(newPresentationValue);
 	}
 

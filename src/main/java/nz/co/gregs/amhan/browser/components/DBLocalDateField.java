@@ -21,14 +21,14 @@ public class DBLocalDateField<ROW extends DBRow> extends QueryableDatatypeField<
 
 	public DBLocalDateField(ROW row, DBLocalDate qdt) {
 		super(LocalDate.now(), row, qdt);
+		setPresentationValue(qdt.getValue());
 		picker.setLabel(getLabel());
-		picker.setValue(qdt.getValue());
 		picker.addValueChangeListener(e->updateQDT(e));
 		add(picker);
 	}
 
 	@Override
-	protected void setPresentationValue(LocalDate newPresentationValue) {
+	protected final void setPresentationValue(LocalDate newPresentationValue) {
 		picker.setValue(newPresentationValue);
 	}
 
