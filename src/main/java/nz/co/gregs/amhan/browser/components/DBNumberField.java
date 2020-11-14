@@ -17,19 +17,30 @@ import nz.co.gregs.dbvolution.datatypes.DBNumber;
  */
 public class DBNumberField<ROW extends DBRow> extends QueryableDatatypeField<ROW, Number, DBNumber> {
 
-	NumberField field = new NumberField();
+	NumberField field;
 
 	public DBNumberField(ROW row, DBNumber qdt) {
 		super(0D, row, qdt);
-		setPresentationValue(qdt.getValue());
-		field.setLabel(getLabel());
-		field.addValueChangeListener(e -> updateQDT(e.getValue()));
-		add(field);
 	}
 
 	@Override
 	protected final void setPresentationValue(Number newPresentationValue) {
 		field.setValue(newPresentationValue != null ? newPresentationValue.doubleValue() : null);
+	}
+
+	@Override
+	protected void addInternalComponents(DBNumber qdt) {
+		add(field);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		field = new NumberField();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		field.addValueChangeListener(e -> updateQDT(e.getValue()));
 	}
 
 }

@@ -16,19 +16,30 @@ import nz.co.gregs.dbvolution.datatypes.DBPasswordHash;
  */
 public class DBPasswordHashField<ROW extends DBRow> extends QueryableDatatypeField<ROW, String, DBPasswordHash> {
 
-	TextField field = new TextField();
+	TextField field ;
 
 	public DBPasswordHashField(ROW row, DBPasswordHash qdt) {
 		super("", row, qdt);
-		setPresentationValue(qdt.getValue());
-		field.setLabel(getLabel());
-		field.addValueChangeListener(e -> updateQDT(e));
-		add(field);
 	}
 
 	@Override
 	protected final void setPresentationValue(String newPresentationValue) {
 		field.setValue(newPresentationValue);
+	}
+
+	@Override
+	protected void addInternalComponents(DBPasswordHash qdt) {
+		add(field);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		field= new TextField();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		field.addValueChangeListener(e -> updateQDT(e));
 	}
 
 }

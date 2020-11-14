@@ -16,23 +16,30 @@ import nz.co.gregs.dbvolution.datatypes.DBBoolean;
  */
 public class DBBooleanField<ROW extends DBRow> extends QueryableDatatypeField<ROW, Boolean, DBBoolean> {
 
-	Checkbox checkBox = new Checkbox();
+	Checkbox checkBox;
 
-	public static <ROW extends DBRow> DBBooleanField<ROW> getField(ROW row, DBBoolean qdt) {
-		return new DBBooleanField<>(row, qdt);
-	}
-
-	private DBBooleanField(ROW row, DBBoolean qdt) {
+	public DBBooleanField(ROW row, DBBoolean qdt) {
 		super(Boolean.FALSE, row, qdt);
-		setPresentationValue(qdt.getValue());
-		checkBox.setLabel(getLabel());
-		checkBox.addValueChangeListener(event -> updateQDT(event));
-		add(checkBox);
 	}
 
 	@Override
 	protected final void setPresentationValue(Boolean newPresentationValue) {
 		checkBox.setValue(newPresentationValue);
+	}
+
+	@Override
+	protected void addInternalComponents(DBBoolean qdt) {
+		add(checkBox);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		checkBox = new Checkbox();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		checkBox.addValueChangeListener(event -> updateQDT(event));
 	}
 
 }

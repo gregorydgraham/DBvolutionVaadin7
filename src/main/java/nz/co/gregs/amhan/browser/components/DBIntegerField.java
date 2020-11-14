@@ -17,20 +17,10 @@ import nz.co.gregs.dbvolution.datatypes.DBInteger;
  */
 public class DBIntegerField<ROW extends DBRow> extends QueryableDatatypeField<ROW, Long, DBInteger> {
 
-	static <ROW extends DBRow> QueryableDatatypeField<ROW, Long, DBInteger> getField(ROW example, DBInteger dbInteger) {
-		return new DBIntegerField<>(example, dbInteger);
-	}
-
-	IntegerField field = new IntegerField();
+	IntegerField field;
 
 	public DBIntegerField(ROW row, DBInteger qdt) {
 		super(0L, row, qdt);
-		setPresentationValue(qdt.getValue());
-		field.setLabel(getLabel());
-		field.addValueChangeListener(
-				e -> updateQDT(e.getValue() == null ? null : e.getValue().longValue())
-		);
-		add(field);
 	}
 
 	@Override
@@ -40,5 +30,22 @@ public class DBIntegerField<ROW extends DBRow> extends QueryableDatatypeField<RO
 		} else {
 			field.clear();
 		}
+	}
+
+	@Override
+	protected void addInternalComponents(DBInteger qdt) {
+		add(field);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		field = new IntegerField();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		field.addValueChangeListener(
+				e -> updateQDT(e.getValue() == null ? null : e.getValue().longValue())
+		);
 	}
 }

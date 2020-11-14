@@ -19,21 +19,10 @@ import nz.co.gregs.dbvolution.datatypes.DBInstant;
  */
 public class DBInstantField<ROW extends DBRow> extends QueryableDatatypeField<ROW, Instant, DBInstant> {
 
-	DateTimePicker picker = new DateTimePicker();
+	DateTimePicker picker;
 
-	public static <ROW extends DBRow> DBInstantField getField(ROW row, DBInstant qdt) {
-		return new DBInstantField<>(row, qdt);
-	}
-
-	private DBInstantField(ROW row, DBInstant qdt) {
+	public DBInstantField(ROW row, DBInstant qdt) {
 		super(Instant.now(), row, qdt);
-		setPresentationValue(qdt.getValue());
-		picker.setLabel(getLabel());
-//		picker.setValue(qdt.getValue() == null ? null : qdt.getValue().atZone(ZoneOffset.UTC).toLocalDateTime());
-		picker.addValueChangeListener(
-				e -> updateQDT(changeToInstant(e.getValue()))
-		);
-		add(picker);
 	}
 
 	@Override
@@ -51,5 +40,22 @@ public class DBInstantField<ROW extends DBRow> extends QueryableDatatypeField<RO
 
 	private LocalDateTime changeToLocalDateTime(Instant value) {
 		return value == null ? null : value.atZone(ZoneOffset.UTC).toLocalDateTime();
+	}
+
+	@Override
+	protected void addInternalComponents(DBInstant qdt) {
+		add(picker);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		picker = new DateTimePicker();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		picker.addValueChangeListener(
+				e -> updateQDT(changeToInstant(e.getValue()))
+		);
 	}
 }

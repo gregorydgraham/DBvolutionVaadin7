@@ -20,15 +20,26 @@ public class DBStringTrimmedField<ROW extends DBRow> extends QueryableDatatypeFi
 
 	public DBStringTrimmedField(ROW row, DBStringTrimmed qdt) {
 		super("", row, qdt);
-		setPresentationValue(qdt.getValue());
-		field.setLabel(getLabel());
-		field.addValueChangeListener(e->updateQDT(e));
-		add(field);
 	}
 
 	@Override
 	protected final void setPresentationValue(String newPresentationValue) {
-		field.setValue(newPresentationValue==null?"":newPresentationValue);
+		field.setValue(newPresentationValue == null ? "" : newPresentationValue);
+	}
+
+	@Override
+	protected void addInternalComponents(DBStringTrimmed qdt) {
+		add(field);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		field = new TextField();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		field.addValueChangeListener(e -> updateQDT(e));
 	}
 
 }

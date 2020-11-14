@@ -16,14 +16,10 @@ import nz.co.gregs.dbvolution.datatypes.DBUnknownDatatype;
  */
 public class DBUnknownDatatypeField<ROW extends DBRow> extends QueryableDatatypeField<ROW, Object, DBUnknownDatatype> {
 
-	private final TextField textField = new TextField();
+	private TextField textField;
 
 	public DBUnknownDatatypeField(ROW row, DBUnknownDatatype qdt) {
 		super("Unknown", row, qdt);
-		setPresentationValue(qdt.getValue());
-		add(textField);
-		textField.setLabel(getLabel());
-		textField.addValueChangeListener(e -> updateQDT(e.getValue()));
 	}
 
 	@Override
@@ -33,5 +29,20 @@ public class DBUnknownDatatypeField<ROW extends DBRow> extends QueryableDatatype
 		} else {
 			textField.clear();
 		}
+	}
+
+	@Override
+	protected void addInternalComponents(DBUnknownDatatype qdt) {
+		add(textField);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		textField = new TextField();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		textField.addValueChangeListener(e -> updateQDT(e.getValue()));
 	}
 }

@@ -41,9 +41,9 @@ public interface QDTUpdateNotifier<T,QDT extends QueryableDatatype<T>> {
 
 		private final QDT updatedQDT;
 
-		public Event(QueryableDatatypeField<?,T,QDT> source) {
+		public Event(QueryableDatatypeField<?,T,QDT> source, QDT qdt) {
 			super(source, true);
-			updatedQDT = source.getQueryableDatatype();
+			updatedQDT = qdt;//source.getQueryableDatatype();
 		}
 
 		public QDT getUpdatedQDT() {

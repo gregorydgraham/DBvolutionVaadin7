@@ -8,6 +8,7 @@ package nz.co.gregs.amhan.browser.components;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.*;
 import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
@@ -27,7 +28,7 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 	public static <ROW extends DBRow, T, QDT extends QueryableDatatype<T>> QueryableDatatypeField<ROW, T, QDT> getFieldForRowAndQDT(ROW example, QDT qdt) {
 		QueryableDatatypeField<?, ?, ?> returnField;
 		if (qdt instanceof DBBoolean) {
-			returnField = DBBooleanField.getField(example, (DBBoolean) qdt);
+			returnField = new DBBooleanField<>(example, (DBBoolean) qdt);
 		} else if (qdt instanceof DBBooleanArray) {
 			returnField = new DBBooleanArrayField(example, (DBBooleanArray) qdt);
 //		} else if (qdt instanceof DBDateOnly) {
@@ -39,9 +40,9 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 //		} else if (qdt instanceof DBEncryptedText) {
 //			return new DBEncryptedTextField<A>(example, (DBEncryptedText) qdt);
 		} else if (qdt instanceof DBInstant) {
-			returnField = DBInstantField.getField(example, (DBInstant) qdt);
+			returnField = new DBInstantField(example, (DBInstant) qdt);
 		} else if (qdt instanceof DBInteger) {
-			returnField = DBIntegerField.getField(example, (DBInteger) qdt);
+			returnField = new DBIntegerField(example, (DBInteger) qdt);
 //		} else if (qdt instanceof DBIntegerEnum) {
 //			return new DBIntegerEnumField(example, (DBIntegerEnum) qdt);
 //		} else if (qdt instanceof DBJavaObject) {
@@ -94,7 +95,7 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			returnField = new DBStringField<>(example, (DBString) qdt);
 		} // and a default handler for all those ones I've forgotten
 		else {
-			returnField = new DBTodoField<>(example, (QueryableDatatype) qdt);
+			return new DBTodoField<>(example, (QueryableDatatype) qdt);
 		}
 		return (QueryableDatatypeField<ROW, T, QDT>) returnField;
 	}
@@ -108,36 +109,51 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 		this.row = row;
 		this.qdt = qdt;
 		this.prop = this.row.getPropertyWrapperOf(qdt);
-		setLabel(prop.javaName());
+		initComponents(qdt);
+	}
+
+	protected final void initComponents(QDT qdt) {
+		initLabel();
+		createInternalComponents();
+		addInternalComponents(qdt);
+		setPresentationValue(qdt.getValue());
+		addInternalValueChangeListeners();
 		if (prop.isPrimaryKey()) {
 			setReadOnly(true);
 		}
 	}
+	
+	Label labelForQDTField;
 
-	public QDT getQueryableDatatype() {
-		return qdt;
+	protected void initLabel() {
+		labelForQDTField = new Label();
+		labelForQDTField.setText(prop.javaName());
+		labelForQDTField.setTitle(prop.javaName());
+		add(new Div(labelForQDTField));
 	}
 
-	public ROW getRow() {
-		return row;
-	}
-
-	protected void updateQDT(ComponentValueChangeEvent<?, BASETYPE> e) {
+	protected final void updateQDT(ComponentValueChangeEvent<?, BASETYPE> e) {
 		System.out.println("QueryableDatatypeField.updateQDT(EVENT) - SET VALUE: " + e.getValue());
 		updateQDT(e.getValue());
 	}
 
-	protected void updateQDT(BASETYPE newValue) {
-			getQueryableDatatype().setValue(newValue);
-			tellObserversOfSetValueEvent();
+	protected final void updateQDT(BASETYPE newValue) {
+		qdt.setValue(newValue);
+		tellObserversOfSetValueEvent();
 	}
 
 	private void tellObserversOfSetValueEvent() {
-		fireEvent(new QDTUpdateNotifier.Event<>(this));
+		fireEvent(new QDTUpdateNotifier.Event<>(this, qdt));
 	}
 
-	public synchronized void reloadValue() {
-		setPresentationValue(getQueryableDatatype().getValue());
+	public synchronized final void reloadValue() {
+		setPresentationValue(qdt.getValue());
 	}
+
+	protected abstract void createInternalComponents() ;
+
+	protected abstract void addInternalComponents(QDT qdt);
+
+	protected abstract void addInternalValueChangeListeners();
 
 }

@@ -16,19 +16,30 @@ import nz.co.gregs.dbvolution.datatypes.DBString;
  */
 public class DBStringField<ROW extends DBRow> extends QueryableDatatypeField<ROW, String, DBString> {
 
-	TextField field = new TextField();
+	TextField field ;
 
 	public DBStringField(ROW row, DBString qdt) {
 		super("", row, qdt);
-		setPresentationValue(qdt.getValue());
-		field.setLabel(getLabel());
-		field.addValueChangeListener(e -> updateQDT(e));
-		add(field);
 	}
 
 	@Override
 	protected void setPresentationValue(String newPresentationValue) {
-		field.setValue(newPresentationValue.isEmpty()?"":newPresentationValue);
+		field.setValue(newPresentationValue.isEmpty() ? "" : newPresentationValue);
+	}
+
+	@Override
+	protected void addInternalComponents(DBString qdt) {
+		add(field);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		field= new TextField();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		field.addValueChangeListener(e -> updateQDT(e));
 	}
 
 }

@@ -17,19 +17,30 @@ import nz.co.gregs.dbvolution.datatypes.DBLocalDate;
  */
 public class DBLocalDateField<ROW extends DBRow> extends QueryableDatatypeField<ROW, LocalDate, DBLocalDate> {
 
-	DatePicker picker = new DatePicker();
+	DatePicker picker;
 
 	public DBLocalDateField(ROW row, DBLocalDate qdt) {
 		super(LocalDate.now(), row, qdt);
-		setPresentationValue(qdt.getValue());
-		picker.setLabel(getLabel());
-		picker.addValueChangeListener(e->updateQDT(e));
-		add(picker);
 	}
 
 	@Override
 	protected final void setPresentationValue(LocalDate newPresentationValue) {
 		picker.setValue(newPresentationValue);
+	}
+
+	@Override
+	protected void addInternalComponents(DBLocalDate qdt) {
+		add(picker);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		picker  = new DatePicker();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		picker.addValueChangeListener(e -> updateQDT(e));
 	}
 
 }

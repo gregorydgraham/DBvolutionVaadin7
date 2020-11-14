@@ -16,19 +16,13 @@ import nz.co.gregs.dbvolution.datatypes.DBUUID;
  * @author gregorygraham
  * @param <ROW>
  */
-public final class DBUUIDField<ROW extends DBRow> extends QueryableDatatypeField<ROW, UUID, DBUUID> {
+public class DBUUIDField<ROW extends DBRow> extends QueryableDatatypeField<ROW, UUID, DBUUID> {
 
-	private final TextField textField = new TextField();
-	Button button = new Button("<- UUID");
+	private TextField textField;
+	private Button button;
 
 	public DBUUIDField(ROW row, DBUUID qdt) {
 		super(null, row, qdt);
-		setPresentationValue(qdt.getValue());
-		textField.setLabel(getLabel());
-		textField.addValueChangeListener(
-				e -> updateQDT(changeToUUID(e.getValue())));
-		button.addClickListener(t -> textField.setValue(UUID.randomUUID().toString()));
-		add(textField, button);
 	}
 
 	private static UUID changeToUUID(String e) {
@@ -49,5 +43,23 @@ public final class DBUUIDField<ROW extends DBRow> extends QueryableDatatypeField
 		} else {
 			textField.clear();
 		}
+	}
+
+	@Override
+	protected void addInternalComponents(DBUUID qdt) {
+		add(textField, button);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		textField = new TextField();
+		button = new Button("<- UUID");
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		textField.addValueChangeListener(
+				e -> updateQDT(changeToUUID(e.getValue())));
+		button.addClickListener(t -> textField.setValue(UUID.randomUUID().toString()));
 	}
 }

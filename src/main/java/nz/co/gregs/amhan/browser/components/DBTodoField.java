@@ -16,18 +16,30 @@ import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
  */
 public class DBTodoField<ROW extends DBRow> extends QueryableDatatypeField<ROW, Object, QueryableDatatype<Object>> {
 
-	TextField field = new TextField();
+	TextField field;
 
 	public DBTodoField(ROW row, QueryableDatatype<Object> qdt) {
 		super("", row, qdt);
-		field.setLabel(getLabel());
-		field.addValueChangeListener(e -> updateQDT(e.getValue()));
-		add(field);
 	}
 
 	@Override
 	protected void setPresentationValue(Object newPresentationValue) {
 		field.setValue(newPresentationValue != null ? newPresentationValue.toString() : null);
+	}
+
+	@Override
+	protected void addInternalComponents(QueryableDatatype<Object> qdt) {
+		add(field);
+	}
+
+	@Override
+	protected void createInternalComponents() {
+		field = new TextField();
+	}
+
+	@Override
+	protected void addInternalValueChangeListeners() {
+		field.addValueChangeListener(e -> updateQDT(e.getValue()));
 	}
 
 }
