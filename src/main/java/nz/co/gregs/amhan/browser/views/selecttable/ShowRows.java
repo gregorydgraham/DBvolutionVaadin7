@@ -37,7 +37,6 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 	private DBRow example;
 
 	private DBTableGrid<DBRow> grid;
-	private Binder<DBRow> binder;
 	private Div wrapper;
 	private Div secondaryPaneContents;
 	private final SplitLayout splitLayout = new SplitLayout();
@@ -79,8 +78,6 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 	private void configureFormAfterValueChangeEvent(final DBRow oldValue, AbstractField.ComponentValueChangeEvent<Grid<DBRow>, DBRow> event) {
 		DBRow newValue = event.getValue();
 		if (newValue != null) {
-			binder = new Binder<DBRow>((Class<DBRow>) newValue.getClass());
-
 			if (secondaryPaneContents != null) {
 				try {
 					splitLayout.remove(secondaryPaneContents);
@@ -88,15 +85,15 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 					// Just means that the contents haven't been added yet					
 				}
 			}
-			secondaryPaneContents = createEditorLayout(newValue, binder);
+			secondaryPaneContents = createEditorLayout(newValue);
 			splitLayout.addToSecondary(secondaryPaneContents);
 			populateForm(event.getValue());
 		}
 	}
 
-	private Div createEditorLayout(DBRow row, Binder<DBRow> binder) {
+	private Div createEditorLayout(DBRow row) {
 
-		final DBRowEditor<DBRow> rowEditor = new DBRowEditor<>(database, row, binder);
+		final DBRowEditor<DBRow> rowEditor = new DBRowEditor<>(database, row);
 		rowEditor.addDBRowUpdatedListener(event -> grid.refreshItem(event.getUpdatedRow()));
 		rowEditor.addEditingCancelledListener(event -> cancelEditing());
 		return rowEditor;

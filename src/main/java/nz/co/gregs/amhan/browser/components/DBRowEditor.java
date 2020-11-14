@@ -31,15 +31,13 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 	
 	private final DBDatabase database;
 	private final ROW row;
-	private final Binder<ROW> binder;
 	private final Button cancel = new Button("Cancel");
 	private final Button save = new Button("Save");
 	private final List<QueryableDatatypeField> qdtFields = new ArrayList<>();
 	
-	public DBRowEditor(DBDatabase database, ROW forThisRow, Binder<ROW> andThisBinder) {
+	public DBRowEditor(DBDatabase database, ROW forThisRow) {
 		this.database = database;
 		row = DBRow.copyDBRow(forThisRow);
-		this.binder = andThisBinder;
 		
 		initButtons();
 		
@@ -110,21 +108,13 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 	
 	private void initButtons(ComponentEventListener<ClickEvent<Button>> saveListener) {
 		initButtons(saveListener, e -> {
-			clearForm();
+			Notification.show("Cancelled");
 		});
 	}
 	
 	private void initButtons(ComponentEventListener<ClickEvent<Button>> saveListener, ComponentEventListener<ClickEvent<Button>> cancelListener) {
 		save.addClickListener(saveListener);
 		cancel.addClickListener(cancelListener);
-	}
-	
-	public void clearForm() {
-		binder.readBean(null);
-	}
-	
-	public void populateForm(ROW row) {
-		binder.readBean(row);
 	}
 	
 	public ROW getRow() {
