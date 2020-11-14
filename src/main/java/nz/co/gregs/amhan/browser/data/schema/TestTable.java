@@ -54,6 +54,9 @@ public class TestTable extends DBRow {
 	@DBColumn
 	DBUUID uniqueIdentifier = new DBUUID().setDefaultInsertValueRandomly();
 
+	@DBColumn
+	DBBooleanArray boolArray = new DBBooleanArray();
+
 	public TestTable() {
 	}
 	
@@ -99,6 +102,11 @@ public class TestTable extends DBRow {
 	
 	public TestTable withUniqueIdentifier(UUID uuid){
 		this.uniqueIdentifier.setValue(uuid);
+		return this;
+	}
+	
+	public TestTable withBooleanArray(Boolean[] value){
+		this.boolArray.setValue(value);
 		return this;
 	}
 	

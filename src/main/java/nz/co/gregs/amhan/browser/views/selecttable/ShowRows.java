@@ -1,7 +1,6 @@
 package nz.co.gregs.amhan.browser.views.selecttable;
 
 import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.ComponentEventListener;
 import nz.co.gregs.amhan.browser.components.DBRowEditor;
 import nz.co.gregs.amhan.browser.grid.DBTableGrid;
 import nz.co.gregs.amhan.browser.data.Database;
@@ -24,7 +23,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import nz.co.gregs.amhan.browser.components.DBRowUpdateNotifier;
 import nz.co.gregs.dbvolution.DBRow;
 
 @Route(value = "showrows", layout = MainView.class)

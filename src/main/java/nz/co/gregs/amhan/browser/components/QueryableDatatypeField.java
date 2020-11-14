@@ -28,8 +28,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 		QueryableDatatypeField<?, ?, ?> returnField;
 		if (qdt instanceof DBBoolean) {
 			returnField = DBBooleanField.getField(example, (DBBoolean) qdt);
-//		} else if (qdt instanceof DBBooleanArray) {
-//			return new DBBooleanArrayField<A>(example, (DBBooleanArray) qdt);
+		} else if (qdt instanceof DBBooleanArray) {
+			returnField = new DBBooleanArrayField(example, (DBBooleanArray) qdt);
 //		} else if (qdt instanceof DBDateOnly) {
 //			return new DBDateOnlyField<A>(example, (DBDateOnly) qdt);
 //		} else if (qdt instanceof DBDateRepeat) {

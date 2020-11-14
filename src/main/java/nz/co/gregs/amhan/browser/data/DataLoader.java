@@ -63,12 +63,14 @@ public class DataLoader {
 						.hasBeenRead()
 						.withTrimmedText("  no spaces here   ")
 						.withRating(2.056)
-						.withUniqueIdentifier(UUID.randomUUID()),
+						.withUniqueIdentifier(UUID.randomUUID())
+						.withBooleanArray(new Boolean[]{false, false, false}),
 				new TestTable()
 						.withOwner(alice)
 						.withText("Is anyone else here?")
 						.hasNotBeenRead()
 						.withRating(-1.53)
+						.withBooleanArray(new Boolean[]{true, true, true, true, true})
 		);
 	}
 
