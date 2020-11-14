@@ -27,7 +27,7 @@ import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
  * @author gregorygraham
  * @param <ROW>
  */
-public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNotifier<ROW>, EditingCancelledNotifier<ROW> {
+public class DBRowEditor<ROW extends DBRow> extends Composite<Div> implements DBRowUpdateNotifier<ROW>, EditingCancelledNotifier<ROW> {
 	
 	private final DBDatabase database;
 	private final ROW row;
@@ -49,13 +49,13 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 		
 		Div editorDiv = new Div();
 		editorDiv.setId("editor");
-		add(editorDiv);
+		getContent().add(editorDiv);
 		
 		FormLayout formLayout = new FormLayout();
 		addFields(formLayout, row);
 		
-		add(formLayout);
-		this.add(createButtonLayout());
+		getContent().add(formLayout);
+		getContent().add(createButtonLayout());
 	}
 	
 	private HorizontalLayout createButtonLayout() {

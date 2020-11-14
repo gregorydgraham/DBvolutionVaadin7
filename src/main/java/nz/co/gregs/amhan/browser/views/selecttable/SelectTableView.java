@@ -4,25 +4,23 @@ import nz.co.gregs.amhan.browser.grid.DataModelTablesGrid;
 import nz.co.gregs.amhan.browser.data.Database;
 
 import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import nz.co.gregs.amhan.browser.views.main.MainView;
 import nz.co.gregs.dbvolution.DBRow;
-import nz.co.gregs.dbvolution.reflection.DataModel;
 
 @Route(value = "selecttable", layout = MainView.class)
 @PageTitle("Select Table")
 @CssImport("./styles/views/selecttable/select-table-view.css")
-public class SelectTableView extends Div {
+public class SelectTableView extends Composite<Div> {
 
 	private final Logger LOG = Logger.getLogger(this.getClass().getCanonicalName());
 
@@ -35,7 +33,7 @@ public class SelectTableView extends Div {
 		this.database = database;
 		configureGrid();
 
-		add(grid);
+		getContent().add(grid);
 	}
 
 	private void configureGrid() {

@@ -1,6 +1,7 @@
 package nz.co.gregs.amhan.browser.views.selecttable;
 
 import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.Composite;
 import nz.co.gregs.amhan.browser.components.DBRowEditor;
 import nz.co.gregs.amhan.browser.grid.DBTableGrid;
 import nz.co.gregs.amhan.browser.data.Database;
@@ -12,14 +13,12 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.Route;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import nz.co.gregs.amhan.browser.views.main.MainView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.*;
-import com.vaadin.flow.shared.Registration;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -28,7 +27,7 @@ import nz.co.gregs.dbvolution.DBRow;
 
 @Route(value = "showrows", layout = MainView.class)
 @CssImport("./styles/views/showrows/show-rows-view.css")
-public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitle, HasUrlParameter<String> {
+public class ShowRows extends Composite<Div> implements RestrictedComponent, HasDynamicTitle, HasUrlParameter<String> {
 
 	private static final Logger LOG = Logger.getLogger(ShowRows.class.getCanonicalName());
 
@@ -38,7 +37,7 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 
 	private DBTableGrid<DBRow> grid;
 	private Div wrapper;
-	private Div secondaryPaneContents;
+	private DBRowEditor<?> secondaryPaneContents;
 	private final SplitLayout splitLayout = new SplitLayout();
 
 	@Override
@@ -61,7 +60,7 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 
 		createGridLayout(this.database, splitLayout);
 
-		add(splitLayout);
+		getContent().add(splitLayout);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -91,7 +90,7 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 		}
 	}
 
-	private Div createEditorLayout(DBRow row) {
+	private DBRowEditor<DBRow> createEditorLayout(DBRow row) {
 
 		final DBRowEditor<DBRow> rowEditor = new DBRowEditor<>(database, row);
 		rowEditor.addDBRowUpdatedListener(event -> grid.refreshItem(event.getUpdatedRow()));
