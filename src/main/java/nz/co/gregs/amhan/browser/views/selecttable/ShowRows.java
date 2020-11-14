@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import nz.co.gregs.amhan.browser.views.main.MainView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.*;
+import com.vaadin.flow.shared.Registration;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -81,7 +82,11 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 			binder = new Binder<DBRow>((Class<DBRow>) newValue.getClass());
 
 			if (secondaryPaneContents != null) {
-				splitLayout.remove(secondaryPaneContents);
+				try {
+					splitLayout.remove(secondaryPaneContents);
+				} catch (IllegalArgumentException ex) {
+					// Just means that the contents haven't been added yet					
+				}
 			}
 			secondaryPaneContents = createEditorLayout(newValue, binder);
 			splitLayout.addToSecondary(secondaryPaneContents);
@@ -93,6 +98,7 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 
 		final DBRowEditor<DBRow> rowEditor = new DBRowEditor<>(database, row, binder);
 		rowEditor.addDBRowUpdatedListener(event -> grid.refreshItem(event.getUpdatedRow()));
+		rowEditor.addEditingCancelledListener(event -> cancelEditing());
 		return rowEditor;
 	}
 
@@ -133,7 +139,7 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 	}
 
 	private void populateForm(DBRow value) {
-		binder.readBean(value);
+//		binder.readBean(value);
 	}
 
 	@Override
@@ -186,5 +192,13 @@ public class ShowRows extends Div implements RestrictedComponent, HasDynamicTitl
 				LOG.log(Level.INFO, "set example to class:{0}", className);
 			}
 		}
+	}
+
+	private void cancelEditing() {
+		try {
+			splitLayout.remove(secondaryPaneContents);
+		} catch (IllegalArgumentException ex) {
+		}
+		grid.deselectAll();
 	}
 }

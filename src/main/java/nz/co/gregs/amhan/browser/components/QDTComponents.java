@@ -6,8 +6,6 @@
 package nz.co.gregs.amhan.browser.components;
 
 import nz.co.gregs.amhan.browser.setter.QueryableDatatypeSetter;
-import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.data.binder.Binder;
 import nz.co.gregs.amhan.browser.valueprovider.QueryableDatatypeValueProvider;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
@@ -19,7 +17,7 @@ import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
  * @param <ROW>
  * @param <TYPE>
  */
-public class QDTComponentsBound<ROW extends DBRow, TYPE> {
+public class QDTComponents<ROW extends DBRow, TYPE> {
 
 	private final String columnName;
 	private final String propertyName;
@@ -28,14 +26,13 @@ public class QDTComponentsBound<ROW extends DBRow, TYPE> {
 	private final QueryableDatatypeSetter<ROW, TYPE, ? extends QueryableDatatype<TYPE>> setter;
 
 	@SuppressWarnings(value = "unchecked")
-	public static <R extends DBRow, T, Q extends QueryableDatatype<T>> QDTComponentsBound<R, T> getFor(R row, Q field, Binder<R> binder) {
-		QDTComponentsBound qdtComponents = new QDTComponentsBound(row, field);
+	public static <R extends DBRow, T, Q extends QueryableDatatype<T>> QDTComponents<R, T> getFor(R row, Q field) {
+		QDTComponents qdtComponents = new QDTComponents(row, field);
 		final QueryableDatatypeField editor = qdtComponents.getEditor();
-		binder.bind(editor, qdtComponents.getValueProvider(), qdtComponents.getSetter());
 		return qdtComponents;
 	}
 
-	private <QDT extends QueryableDatatype<TYPE>> QDTComponentsBound(ROW row, QDT field) {
+	private <QDT extends QueryableDatatype<TYPE>> QDTComponents(ROW row, QDT field) {
 		editor = QueryableDatatypeField.getFieldForRowAndQDT(row, field);
 		valueProvider = QueryableDatatypeValueProvider.getValueProvider(row, field);
 		setter = QueryableDatatypeSetter.getSetter(row, field);

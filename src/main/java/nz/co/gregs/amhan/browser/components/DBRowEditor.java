@@ -27,7 +27,7 @@ import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
  * @author gregorygraham
  * @param <ROW>
  */
-public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNotifier<ROW> {
+public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNotifier<ROW>, EditingCancelledNotifier<ROW> {
 	
 	private final DBDatabase database;
 	private final ROW row;
@@ -38,15 +38,15 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 	
 	public DBRowEditor(DBDatabase database, ROW forThisRow, Binder<ROW> andThisBinder) {
 		this.database = database;
-		row = forThisRow;
+		row = DBRow.copyDBRow(forThisRow);
 		this.binder = andThisBinder;
 		
 		initButtons();
 		
-		createEditorLayout(binder, row);
+		createEditorLayout(row);
 	}
 	
-	private void createEditorLayout(Binder<ROW> binder, ROW row) {
+	private void createEditorLayout(ROW row) {
 		setId("editor-layout");
 		
 		Div editorDiv = new Div();
@@ -54,11 +54,10 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 		add(editorDiv);
 		
 		FormLayout formLayout = new FormLayout();
-		addFields(formLayout, binder, row);
+		addFields(formLayout, row);
 		
 		add(formLayout);
-		this.add(
-				createButtonLayout());
+		this.add(createButtonLayout());
 	}
 	
 	private HorizontalLayout createButtonLayout() {
@@ -67,20 +66,23 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 		buttonLayout.setWidthFull();
 		buttonLayout.setSpacing(true);
 		cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+		cancel.addClickListener(event -> cancelEditing());
 		save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		save.setEnabled(false);
 		buttonLayout.add(save, cancel);
 		return buttonLayout;
 	}
 	
-	private void addFields(FormLayout formLayout, Binder<ROW> binder, ROW row) {
+	private void addFields(FormLayout formLayout, ROW row) {
 		var qdts = row.getColumnQueryableDatatypes();
-		qdts.forEach(qdt -> addQueryableDatatypeField(qdt, binder, row, formLayout));
+		qdts.forEach(qdt -> addQueryableDatatypeField(qdt, row, formLayout));
 	}
 	
-	private <T> void addQueryableDatatypeField(QueryableDatatype<T> qdt, Binder<ROW> binder, ROW row, FormLayout formLayout) {
-		QDTComponentsBound<ROW, T> qdtComponent = QDTComponentsBound.getFor(row, qdt, binder);
+	private <T> void addQueryableDatatypeField(QueryableDatatype<T> qdt, ROW row, FormLayout formLayout) {
+		QDTComponents<ROW, T> qdtComponent = QDTComponents.getFor(row, qdt);
 		final QueryableDatatypeField<ROW, T, ?> editor = qdtComponent.getEditor();
 		editor.getElement().getClassList().add("full-width");
+		editor.addQDTUpdateListener(event -> enableSaveButton());
 		qdtFields.add(editor);
 		formLayout.add(editor);
 	}
@@ -139,5 +141,18 @@ public class DBRowEditor<ROW extends DBRow> extends Div implements DBRowUpdateNo
 
 	private void reloadFields() {
 		qdtFields.stream().forEach(f->f.reloadValue());
+	}
+
+	private void enableSaveButton() {
+		save.setEnabled(true);
+	}
+
+	private void cancelEditing() {
+		qdtFields.forEach(qdtf->qdtf.setEnabled(false));
+		tellObserversOfCancelEditingEvent();
+	}
+	
+	public void tellObserversOfCancelEditingEvent() {
+		fireEvent(new EditingCancelledNotifier.Event<>(this,row));
 	}
 }
