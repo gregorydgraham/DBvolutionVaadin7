@@ -10,7 +10,9 @@ import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.shared.Registration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.TimeZone;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBInstant;
 
@@ -57,10 +59,10 @@ public class DBInstantField<ROW extends DBRow> extends QueryableDatatypeField<RO
 	}
 
 	private Instant convertToInstant(LocalDateTime value) {
-		return value == null ? null : value.toInstant(ZoneOffset.UTC);
+		return value == null ? null : value.atZone(ZoneId.systemDefault()).toInstant();
 	}
 
 	private LocalDateTime convertToLocalDateTime(Instant value) {
-		return value == null ? null : value.atZone(ZoneOffset.UTC).toLocalDateTime();
+		return value == null ? null : value.atZone(ZoneOffset.systemDefault()).toLocalDateTime();
 	}
 }
