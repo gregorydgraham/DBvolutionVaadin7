@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nz.co.gregs.amhan.browser.components;
+package nz.co.gregs.amhan.components;
 
 import com.vaadin.flow.component.textfield.TextField;
 import nz.co.gregs.dbvolution.DBRow;

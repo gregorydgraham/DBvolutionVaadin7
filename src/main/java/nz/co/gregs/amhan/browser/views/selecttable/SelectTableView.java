@@ -1,6 +1,6 @@
 package nz.co.gregs.amhan.browser.views.selecttable;
 
-import nz.co.gregs.amhan.browser.grid.DataModelTablesGrid;
+import nz.co.gregs.amhan.components.schema.DataModelTablesGrid;
 import nz.co.gregs.amhan.browser.data.Database;
 
 import com.vaadin.flow.component.AbstractField;

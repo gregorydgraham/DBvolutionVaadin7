@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nz.co.gregs.amhan.browser.grid;
+package nz.co.gregs.amhan.components;
 
 import nz.co.gregs.dbvolution.utility.comparators.RowPropertyComparator;
 import com.vaadin.flow.component.grid.Grid;
@@ -25,13 +25,13 @@ import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
  * @author gregorygraham
  * @param <ROW> The DBRow to be show using this grid
  */
-public class DBTableGrid<ROW extends DBRow> extends Grid<ROW> {
+public class DBRowGrid<ROW extends DBRow> extends Grid<ROW> {
 
 	private final DBDatabase database;
 	private final ROW example;
 
 	@SuppressWarnings("unchecked")
-	public DBTableGrid(DBDatabase db, ROW example) {
+	public DBRowGrid(DBDatabase db, ROW example) {
 		super((Class<ROW>) example.getClass(), false);
 		this.database = db;
 		this.example = example;
@@ -65,7 +65,7 @@ public class DBTableGrid<ROW extends DBRow> extends Grid<ROW> {
 			allRows = database.getDBTable(example).setBlankQueryAllowed(true).getAllRows();
 			setItems(allRows);
 		} catch (SQLException | AccidentalCartesianJoinException | AccidentalBlankQueryException ex) {
-			Logger.getLogger(DBTableGrid.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(DBRowGrid.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 

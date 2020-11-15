@@ -2,8 +2,8 @@ package nz.co.gregs.amhan.browser.views.selecttable;
 
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.Composite;
-import nz.co.gregs.amhan.browser.components.DBRowEditor;
-import nz.co.gregs.amhan.browser.grid.DBTableGrid;
+import nz.co.gregs.amhan.components.DBRowEditor;
+import nz.co.gregs.amhan.components.DBRowGrid;
 import nz.co.gregs.amhan.browser.data.Database;
 import nz.co.gregs.amhan.browser.data.schema.BrowserUser;
 import nz.co.gregs.amhan.browser.security.RestrictedComponent;
@@ -35,7 +35,7 @@ public class ShowRows extends Composite<Div> implements RestrictedComponent, Has
 	private String className;
 	private DBRow example;
 
-	private DBTableGrid<DBRow> grid;
+	private DBRowGrid<DBRow> grid;
 	private Div wrapper;
 	private DBRowEditor<?> secondaryPaneContents;
 	private final SplitLayout splitLayout = new SplitLayout();
@@ -54,7 +54,6 @@ public class ShowRows extends Composite<Div> implements RestrictedComponent, Has
 		addWindowResizeListener();
 		this.database = db;
 		setDBRowExample();
-		example = getDBRowExample();
 
 		splitLayout.setSizeFull();
 
@@ -64,30 +63,38 @@ public class ShowRows extends Composite<Div> implements RestrictedComponent, Has
 	}
 
 	@SuppressWarnings("unchecked")
-	private void configureGridAndBinder(Database db) {
+	private void configureGrid(Database db) {
 
-		final DBRow row = getDBRowExample();
-		grid = new DBTableGrid<>(db, row);
+		grid = new DBRowGrid<>(db, example);
 
 		// when a row is selected or deselected, populate form
-		grid.asSingleSelect().addValueChangeListener(event -> configureFormAfterValueChangeEvent(row, event));
+		grid.asSingleSelect().addValueChangeListener(event -> updateEditorPane(event));
 	}
 
 	@SuppressWarnings("unchecked")
-	private void configureFormAfterValueChangeEvent(final DBRow oldValue, AbstractField.ComponentValueChangeEvent<Grid<DBRow>, DBRow> event) {
+	private void updateEditorPane(AbstractField.ComponentValueChangeEvent<Grid<DBRow>, DBRow> event) {
 		DBRow newValue = event.getValue();
 		if (newValue != null) {
-			if (secondaryPaneContents != null) {
-				try {
-					splitLayout.remove(secondaryPaneContents);
-				} catch (IllegalArgumentException ex) {
-					// Just means that the contents haven't been added yet					
-				}
-			}
-			secondaryPaneContents = createEditorLayout(newValue);
-			splitLayout.addToSecondary(secondaryPaneContents);
-			populateForm(event.getValue());
+			clearEditorPane();
+			fillEditorPane(newValue);
+		} else {
+			clearEditorPane();
 		}
+	}
+
+	private void clearEditorPane() {
+		if (secondaryPaneContents != null) {
+			try {
+				splitLayout.remove(secondaryPaneContents);
+			} catch (IllegalArgumentException ex) {
+				// Just means that the contents haven't been added yet
+			}
+		}
+	}
+
+	private void fillEditorPane(DBRow newValue) {
+		secondaryPaneContents = createEditorLayout(newValue);
+		splitLayout.addToSecondary(secondaryPaneContents);
 	}
 
 	private DBRowEditor<DBRow> createEditorLayout(DBRow row) {
@@ -109,7 +116,7 @@ public class ShowRows extends Composite<Div> implements RestrictedComponent, Has
 		wrapper = new Div();
 		wrapper.setId("grid-wrapper");
 		wrapper.setWidthFull();
-		configureGridAndBinder(db);
+		configureGrid(db);
 		wrapper.add(grid);
 		splitLayout.addToPrimary(wrapper);
 	}
@@ -120,7 +127,7 @@ public class ShowRows extends Composite<Div> implements RestrictedComponent, Has
 				wrapper.remove(grid);
 			}
 			if (database != null) {
-				configureGridAndBinder(database);
+				configureGrid(database);
 			}
 			wrapper.add(grid);
 		}
@@ -134,19 +141,14 @@ public class ShowRows extends Composite<Div> implements RestrictedComponent, Has
 		}
 	}
 
-	private void populateForm(DBRow value) {
-//		binder.readBean(value);
-	}
-
 	@Override
 	public String getPageTitle() {
-		return "Show Rows of " + getDBRowExample().getTableName();
+		return "Show Rows of " + example.getTableName();
 	}
 
-	private DBRow getDBRowExample() {
-		return example;
-	}
-
+//	private DBRow getDBRowExample() {
+//		return example;
+//	}
 	@SuppressWarnings("unchecked")
 	private void setDBRowExample() {
 		try {
@@ -191,10 +193,7 @@ public class ShowRows extends Composite<Div> implements RestrictedComponent, Has
 	}
 
 	private void cancelEditing() {
-		try {
-			splitLayout.remove(secondaryPaneContents);
-		} catch (IllegalArgumentException ex) {
-		}
+		clearEditorPane();
 		grid.deselectAll();
 	}
 }

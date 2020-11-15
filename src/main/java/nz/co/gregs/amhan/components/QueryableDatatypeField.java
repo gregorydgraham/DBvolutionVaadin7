@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nz.co.gregs.amhan.browser.components;
+package nz.co.gregs.amhan.components;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
@@ -103,6 +103,7 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 	private final ROW row;
 	private final QDT qdt;
 	private final PropertyWrapper<ROW, BASETYPE, QDT> prop;
+	private boolean initialised;
 
 	protected QueryableDatatypeField(BASETYPE defaultValue, ROW row, QDT qdt) {
 		super(defaultValue);
@@ -117,12 +118,12 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 		createInternalComponents();
 		addInternalComponents(qdt);
 		setPresentationValue(qdt.getValue());
-		addInternalValueChangeListeners();
 		if (prop.isPrimaryKey()) {
 			setReadOnly(true);
 		}
+		addInternalValueChangeListeners();
 	}
-	
+
 	Label labelForQDTField;
 
 	protected void initLabel() {
@@ -146,11 +147,15 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 		fireEvent(new QDTUpdateNotifier.Event<>(this, qdt));
 	}
 
+	public PropertyWrapper<ROW, BASETYPE, QDT> getPropertyWrapper() {
+		return prop;
+	}
+
 	public synchronized final void reloadValue() {
 		setPresentationValue(qdt.getValue());
 	}
 
-	protected abstract void createInternalComponents() ;
+	protected abstract void createInternalComponents();
 
 	protected abstract void addInternalComponents(QDT qdt);
 

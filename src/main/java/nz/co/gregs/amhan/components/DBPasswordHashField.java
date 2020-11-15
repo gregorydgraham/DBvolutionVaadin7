@@ -3,32 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nz.co.gregs.amhan.browser.components;
+package nz.co.gregs.amhan.components;
 
 import com.vaadin.flow.component.textfield.TextField;
 import nz.co.gregs.dbvolution.DBRow;
-import nz.co.gregs.dbvolution.datatypes.DBString;
+import nz.co.gregs.dbvolution.datatypes.DBPasswordHash;
 
 /**
  *
  * @author gregorygraham
  * @param <ROW>
  */
-public class DBStringField<ROW extends DBRow> extends QueryableDatatypeField<ROW, String, DBString> {
+public class DBPasswordHashField<ROW extends DBRow> extends QueryableDatatypeField<ROW, String, DBPasswordHash> {
 
 	TextField field ;
 
-	public DBStringField(ROW row, DBString qdt) {
+	public DBPasswordHashField(ROW row, DBPasswordHash qdt) {
 		super("", row, qdt);
 	}
 
 	@Override
-	protected void setPresentationValue(String newPresentationValue) {
-		field.setValue(newPresentationValue.isEmpty() ? "" : newPresentationValue);
+	protected final void setPresentationValue(String newPresentationValue) {
+		field.setValue(newPresentationValue);
 	}
 
 	@Override
-	protected void addInternalComponents(DBString qdt) {
+	protected void addInternalComponents(DBPasswordHash qdt) {
 		add(field);
 	}
 

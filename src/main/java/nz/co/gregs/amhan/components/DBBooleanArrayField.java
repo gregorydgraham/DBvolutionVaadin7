@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nz.co.gregs.amhan.browser.components;
+package nz.co.gregs.amhan.components;
 
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -54,9 +54,7 @@ public class DBBooleanArrayField<ROW extends DBRow> extends QueryableDatatypeFie
 
 	private void updateBooleanArray(AbstractField.ComponentValueChangeEvent<Checkbox, Boolean> event) {
 		List<Boolean> bools = new ArrayList<>(0);
-		for (Checkbox box : checkBoxes) {
-			bools.add(box.getValue());
-		}
+		checkBoxes.forEach(box -> bools.add(box.getValue()));
 		updateQDT(bools.toArray(new Boolean[]{}));
 	}
 

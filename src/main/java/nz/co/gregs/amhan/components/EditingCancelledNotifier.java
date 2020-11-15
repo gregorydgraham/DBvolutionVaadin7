@@ -3,25 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nz.co.gregs.amhan.browser.components;
+package nz.co.gregs.amhan.components;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.shared.Registration;
-import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
+import nz.co.gregs.dbvolution.DBRow;
 
 /**
  *
  * @author gregorygraham
- * @param <T>
- * @param <QDT>
+ * @param <ROW>
  */
-public interface QDTUpdateNotifier<T,QDT extends QueryableDatatype<T>> {
+public interface EditingCancelledNotifier<ROW extends DBRow> {
 
 	@SuppressWarnings(value = "unchecked")
-	default Registration addQDTUpdateListener(ComponentEventListener<Event<T,QDT>> listener) {
+	default Registration addEditingCancelledListener(ComponentEventListener<Event<ROW>> listener) {
 		if (this instanceof Component) {
 			return ComponentUtil.addListener(
 					(Component) this,
@@ -37,18 +36,19 @@ public interface QDTUpdateNotifier<T,QDT extends QueryableDatatype<T>> {
 		}
 	}
 
-	public static class Event<T,QDT extends QueryableDatatype<T>> extends ComponentEvent<QueryableDatatypeField<?,T,QDT>> {
+	public static class Event<ROW extends DBRow> extends ComponentEvent<DBRowEditor<ROW>> {
 
-		private final QDT updatedQDT;
+		private final ROW cancelledEdittingRow;
 
-		public Event(QueryableDatatypeField<?,T,QDT> source, QDT qdt) {
+		public Event(DBRowEditor<ROW> source, ROW row) {
 			super(source, true);
-			updatedQDT = qdt;//source.getQueryableDatatype();
+			cancelledEdittingRow = row;
 		}
 
-		public QDT getUpdatedQDT() {
-			return updatedQDT;
-		}		
+		public ROW getCancelledEdittingRow() {
+			return cancelledEdittingRow;
+		}
+		
 		
 	}
 
