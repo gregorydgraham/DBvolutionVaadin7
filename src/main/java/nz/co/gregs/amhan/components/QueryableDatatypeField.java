@@ -31,8 +31,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			returnField = new DBBooleanField<>(example, (DBBoolean) qdt);
 		} else if (qdt instanceof DBBooleanArray) {
 			returnField = new DBBooleanArrayField(example, (DBBooleanArray) qdt);
-//		} else if (qdt instanceof DBDateOnly) {
-//			return new DBDateOnlyField<A>(example, (DBDateOnly) qdt);
+		} else if (qdt instanceof DBDateOnly) {
+			return new DBDateOnlyField(example, (DBDateOnly) qdt);
 //		} else if (qdt instanceof DBDateRepeat) {
 //			return new DBDateRepeatField<A>(example, (DBDateRepeat) qdt);
 //		} else if (qdt instanceof DBDuration) {
@@ -139,7 +139,7 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 	}
 
 	protected final void updateQDT(BASETYPE newValue) {
-		qdt.setValue(newValue);
+		setValue(newValue);
 		tellObserversOfSetValueEvent();
 	}
 
@@ -153,6 +153,17 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 
 	public synchronized final void reloadValue() {
 		setPresentationValue(qdt.getValue());
+	}
+
+	@Override
+	public BASETYPE getValue() {
+		return super.getValue();
+	}
+
+	@Override
+	public void setValue(BASETYPE value) {
+		qdt.setValue(value);
+		super.setValue(value);
 	}
 
 	protected abstract void createInternalComponents();

@@ -5,6 +5,8 @@
  */
 package nz.co.gregs.amhan.browser.grid.labelgenerator;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBInstant;
 
@@ -13,7 +15,7 @@ import nz.co.gregs.dbvolution.datatypes.DBInstant;
  * @author gregorygraham
  * @param <A>
  */
-public class DBInstantLabelGenerator<A extends DBRow> extends AbstractDBRowPropertyLabelGenerator<A,DBInstant> {
+public class DBInstantLabelGenerator<A extends DBRow> extends AbstractDBRowPropertyLabelGenerator<A, DBInstant> {
 
 	public DBInstantLabelGenerator(A example, DBInstant qdt) {
 		super(example, qdt);
@@ -21,7 +23,12 @@ public class DBInstantLabelGenerator<A extends DBRow> extends AbstractDBRowPrope
 
 	@Override
 	public String apply(A item) {
-		return getQDT(item).stringValue();
+		final Instant value = getQDT(item).getValue();
+		if (value == null) {
+			return "";
+		} else {
+			return value.atZone(ZoneId.systemDefault()).toString();
+		}
 	}
 
 }

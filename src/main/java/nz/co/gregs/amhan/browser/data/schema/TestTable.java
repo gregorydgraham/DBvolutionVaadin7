@@ -43,6 +43,9 @@ public class TestTable extends DBRow {
 	DBLocalDateTime timeUpdated = new DBLocalDateTime().setDefaultUpdateValueToNow();
 
 	@DBColumn
+	DBDateOnly dateOnly = new DBDateOnly().setDefaultInsertValueToCurrentDateOnly();
+
+	@DBColumn
 	DBString text = new DBString();
 
 	@DBColumn

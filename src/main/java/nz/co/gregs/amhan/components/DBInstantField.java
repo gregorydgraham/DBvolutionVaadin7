@@ -6,13 +6,10 @@
 package nz.co.gregs.amhan.components;
 
 import com.vaadin.flow.component.AbstractField;
-import com.vaadin.flow.component.datetimepicker.DateTimePicker;
-import com.vaadin.flow.shared.Registration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.TimeZone;
+import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.timepicker.TimePicker;
+import java.time.*;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBInstant;
 
@@ -23,7 +20,8 @@ import nz.co.gregs.dbvolution.datatypes.DBInstant;
  */
 public class DBInstantField<ROW extends DBRow> extends QueryableDatatypeField<ROW, Instant, DBInstant> {
 
-	DateTimePicker picker;
+	DatePicker datePicker;
+	TimePicker timePicker;
 
 	public DBInstantField(ROW row, DBInstant qdt) {
 		super(null, row, qdt);
@@ -32,30 +30,48 @@ public class DBInstantField<ROW extends DBRow> extends QueryableDatatypeField<RO
 	@Override
 	protected final void setPresentationValue(Instant newPresentationValue) {
 		if (newPresentationValue != null) {
-			picker.setValue(convertToLocalDateTime(newPresentationValue));
+			final LocalDateTime localdatetime = convertToLocalDateTime(newPresentationValue);
+			datePicker.setValue(localdatetime.toLocalDate());
+			timePicker.setValue(localdatetime.toLocalTime());
 		} else {
-			picker.clear();
+			datePicker.clear();
+			timePicker.clear();
 		}
 	}
 
 	@Override
 	protected void addInternalComponents(DBInstant qdt) {
-		add(picker);
+		add(new Span(datePicker, timePicker));
 	}
 
 	@Override
 	protected void createInternalComponents() {
-		picker = new DateTimePicker();
+		datePicker = new DatePicker();
+		timePicker = new TimePicker();
 	}
 
 	@Override
 	protected void addInternalValueChangeListeners() {
-		picker.addValueChangeListener(e -> updateInstant(e));
+		datePicker.addValueChangeListener(e -> updateDate(e));
+		timePicker.addValueChangeListener(e -> updateTime(e));
 	}
 
-	private void updateInstant(AbstractField.ComponentValueChangeEvent<DateTimePicker, LocalDateTime> e) {
-		final Instant instant = convertToInstant(e.getValue());
-		updateQDT(instant);
+	private void updateDate(AbstractField.ComponentValueChangeEvent<DatePicker, LocalDate> e) {
+		updateInstant(e);
+	}
+
+	private void updateTime(AbstractField.ComponentValueChangeEvent<TimePicker, LocalTime> e) {
+		updateInstant(e);
+	}
+
+	private void updateInstant(AbstractField.ComponentValueChangeEvent<?, ?> e) {
+		LocalDateTime localdatetime = LocalDateTime.of(datePicker.getValue(), timePicker.getValue());
+		Instant instant = convertToInstant(localdatetime);
+		if (instant == null && instant != getValue()) {
+			updateQDT(instant);
+		} else if (instant != null && !instant.equals(getValue())) {
+			updateQDT(instant);
+		}
 	}
 
 	private Instant convertToInstant(LocalDateTime value) {
@@ -63,6 +79,6 @@ public class DBInstantField<ROW extends DBRow> extends QueryableDatatypeField<RO
 	}
 
 	private LocalDateTime convertToLocalDateTime(Instant value) {
-		return value == null ? null : value.atZone(ZoneOffset.systemDefault()).toLocalDateTime();
+		return value == null ? null : value.atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}
 }

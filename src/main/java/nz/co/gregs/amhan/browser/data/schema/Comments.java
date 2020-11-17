@@ -7,6 +7,7 @@ package nz.co.gregs.amhan.browser.data.schema;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.annotations.DBAutoIncrement;
 import nz.co.gregs.dbvolution.annotations.DBColumn;
@@ -50,7 +51,7 @@ public class Comments extends DBRow {
 	}
 	
 	public Comments postedAt(Instant instant){
-		this.timePosted.setValue(instant);
+		this.timePosted.setValue(instant.atZone(ZoneId.systemDefault()).toLocalDateTime());
 		return this;
 	}
 	

@@ -74,7 +74,8 @@ public class DBRowGrid<ROW extends DBRow> extends Grid<ROW> {
 		List<PropertyWrapper<?, ?, ?>> wrapper = example.getColumnPropertyWrappers();
 		wrapper.forEach(
 				prop -> {
-					final RowPropertyComparator<ROW> rowPropertyComparator = new RowPropertyComparator<ROW>(example, prop.getQueryableDatatype());
+					final RowPropertyComparator<ROW> rowPropertyComparator 
+							= new RowPropertyComparator<ROW>(example, prop.getQueryableDatatype());
 					addColumn(
 							DBRowPropertyRenderer.getRenderer(example, prop))
 							.setHeader(prop.javaName())
