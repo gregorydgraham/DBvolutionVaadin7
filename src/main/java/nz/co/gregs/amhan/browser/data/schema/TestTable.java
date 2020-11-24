@@ -14,6 +14,8 @@ import nz.co.gregs.dbvolution.annotations.DBColumn;
 import nz.co.gregs.dbvolution.annotations.DBForeignKey;
 import nz.co.gregs.dbvolution.annotations.DBPrimaryKey;
 import nz.co.gregs.dbvolution.datatypes.*;
+import nz.co.gregs.dbvolution.exceptions.CannotEncryptInputException;
+import nz.co.gregs.dbvolution.utility.encryption.Encrypted;
 
 /**
  *
@@ -59,6 +61,9 @@ public class TestTable extends DBRow {
 
 	@DBColumn
 	DBBooleanArray boolArray = new DBBooleanArray();
+
+	@DBColumn
+	DBEncryptedText encryptedText = new DBEncryptedText();
 
 	public TestTable() {
 	}
@@ -110,6 +115,11 @@ public class TestTable extends DBRow {
 	
 	public TestTable withBooleanArray(Boolean[] value){
 		this.boolArray.setValue(value);
+		return this;
+	}
+	
+	public TestTable withEncryptedText(String passphrase, String text) throws CannotEncryptInputException{
+		this.encryptedText.setValue(Encrypted.encrypt(passphrase, text));
 		return this;
 	}
 	

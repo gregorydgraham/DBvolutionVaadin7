@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.UUID;
 import nz.co.gregs.amhan.browser.data.schema.TestTable;
+import nz.co.gregs.dbvolution.exceptions.CannotEncryptInputException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -37,7 +38,7 @@ public class DataLoader {
 		};
 	}
 
-	private void setData(Database db) throws SQLException {
+	private void setData(Database db) throws SQLException, CannotEncryptInputException {
 		db.createTable(new BrowserUser());
 		db.createTable(new Comments());
 		db.createTable(new TestTable());
@@ -71,6 +72,7 @@ public class DataLoader {
 						.hasNotBeenRead()
 						.withRating(-1.53)
 						.withBooleanArray(new Boolean[]{true, true, true, true, true})
+						.withEncryptedText("secret secret", "very secret text")
 		);
 	}
 
