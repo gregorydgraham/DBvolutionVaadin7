@@ -77,6 +77,7 @@ public class DataLoader {
 						.withIntegerEnum(IntegerEnum.FIFTH)
 						.withStringEnum(StringEnum.GATHER)
 						.withDate(new Date())
+						.withDoubleEnum(DoubleEnum.FOURTH)
 		);
 	}
 

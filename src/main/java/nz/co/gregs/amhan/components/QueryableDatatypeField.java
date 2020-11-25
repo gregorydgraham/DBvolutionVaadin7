@@ -72,8 +72,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 		} // the following types need to be checked last as they have subtypes 
 		else if (qdt instanceof DBDate) {
 			returnField = new DBDateField<>(example, (DBDate) qdt);
-//		} else if (qdt instanceof DBEnum) {
-//			return new DBEnumField(example, (DBEnum) qdt);
+		} else if (qdt instanceof DBEnum) {
+			return new DBEnumField(example, (DBEnum) qdt);
 //		} else if (qdt instanceof DBLargeText) {
 //			return new DBLargeTextField<A>(example, (DBLargeText) qdt);
 //		} else if (qdt instanceof DBLargeObject) {
