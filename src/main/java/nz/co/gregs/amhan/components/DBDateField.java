@@ -29,7 +29,11 @@ public class DBDateField<ROW extends DBRow> extends QueryableDatatypeField<ROW, 
 
 	@Override
 	protected final void setPresentationValue(Date newPresentationValue) {
-		picker.setValue(LocalDateTime.ofInstant(newPresentationValue.toInstant(), ZoneId.systemDefault()));
+		if (newPresentationValue != null) {
+			picker.setValue(LocalDateTime.ofInstant(newPresentationValue.toInstant(), ZoneId.systemDefault()));
+		} else {
+			picker.clear();
+		}
 	}
 
 	@Override
