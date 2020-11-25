@@ -51,11 +51,6 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 //			return new DBLargeBinaryField<A>(example, (DBLargeBinary) qdt);
 		} else if (qdt instanceof DBLocalDate) {
 			returnField = new DBLocalDateField<>(example, (DBLocalDate) qdt);
-//			DBLocalDate localQDT = (DBLocalDate) qdt;
-//			returnField = (C) new DatePicker(
-//					prop.javaName(),
-//					new QDTValueChangeListener(localQDT)
-//			);
 		} else if (qdt instanceof DBLocalDateTime) {
 			returnField = new DBLocalDateTimeField<>(example, (DBLocalDateTime) qdt);
 //		} else if (qdt instanceof DBNumberStatistics) {
@@ -74,9 +69,9 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			returnField = new DBUnknownDatatypeField<>(example, (DBUnknownDatatype) qdt);
 //		} else if (qdt instanceof DBUntypedValue) {
 //			return new DBUntypedValueField<A>(example, (DBUntypedValue) qdt);
-//		} // the following types need to be checked last as they have subtypes 
-//		else if (qdt instanceof DBDate) {
-//			return new DBDateField<A>(example, (DBDate) qdt);
+		} // the following types need to be checked last as they have subtypes 
+		else if (qdt instanceof DBDate) {
+			returnField = new DBDateField<>(example, (DBDate) qdt);
 //		} else if (qdt instanceof DBEnum) {
 //			return new DBEnumField(example, (DBEnum) qdt);
 //		} else if (qdt instanceof DBLargeText) {

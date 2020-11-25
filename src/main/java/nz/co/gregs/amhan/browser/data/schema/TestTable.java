@@ -7,6 +7,7 @@ package nz.co.gregs.amhan.browser.data.schema;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.annotations.DBAutoIncrement;
@@ -70,6 +71,9 @@ public class TestTable extends DBRow {
 	
 	@DBColumn
 	DBStringEnum<StringEnum> stringEnum = new DBStringEnum<>();
+	
+	@DBColumn
+	DBDate date = new DBDate();
 
 	public TestTable() {
 	}
@@ -129,13 +133,18 @@ public class TestTable extends DBRow {
 		return this;
 	}
 	
-	public TestTable withIntegerEnum(IntegerEnum value) throws CannotEncryptInputException{
+	public TestTable withIntegerEnum(IntegerEnum value)  {
 		this.integerEnum.setValue(value);
 		return this;
 	}
 	
-	public TestTable withStringEnum(StringEnum value) throws CannotEncryptInputException{
+	public TestTable withStringEnum(StringEnum value)  {
 		this.stringEnum.setValue(value);
+		return this;
+	}
+	
+	public TestTable withDate(Date value)  {
+		this.date.setValue(value);
 		return this;
 	}
 	
