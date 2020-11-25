@@ -9,8 +9,8 @@ import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.textfield.TextField;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +27,7 @@ import nz.co.gregs.dbvolution.utility.encryption.Encrypted;
  */
 public class DBEncryptedTextField<ROW extends DBRow> extends QueryableDatatypeField<ROW, byte[], DBEncryptedText> {
 
-	TextField passPhraseField;
+	PasswordField passPhraseField;
 	TextArea textfield;
 	TextArea encryptedTextField;
 	Label warningField;
@@ -70,7 +70,7 @@ public class DBEncryptedTextField<ROW extends DBRow> extends QueryableDatatypeFi
 	@Override
 	protected void createInternalComponents() {
 		textfield = new TextArea();
-		passPhraseField = new TextField();
+		passPhraseField = new PasswordField();
 		warningField = new Label();
 		encryptedTextField = new TextArea();
 		encryptedTextField.setReadOnly(true);
@@ -102,7 +102,7 @@ public class DBEncryptedTextField<ROW extends DBRow> extends QueryableDatatypeFi
 		}
 	}
 
-	private void updatePassPhrase(AbstractField.ComponentValueChangeEvent<TextField, String> e) {
+	private void updatePassPhrase(AbstractField.ComponentValueChangeEvent<PasswordField, String> e) {
 		String passPhrase = passPhraseField.getValue();
 		if (passPhrase != null && !passPhrase.isEmpty()) {
 			String sourceText = textfield.getValue();

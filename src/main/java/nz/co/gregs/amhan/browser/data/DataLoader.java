@@ -11,6 +11,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.UUID;
+import nz.co.gregs.amhan.browser.data.schema.IntegerEnum;
 import nz.co.gregs.amhan.browser.data.schema.TestTable;
 import nz.co.gregs.dbvolution.exceptions.CannotEncryptInputException;
 import org.slf4j.Logger;
@@ -73,6 +74,7 @@ public class DataLoader {
 						.withRating(-1.53)
 						.withBooleanArray(new Boolean[]{true, true, true, true, true})
 						.withEncryptedText("secret secret", "very secret text")
+						.withIntegerEnum(IntegerEnum.FIFTH)
 		);
 	}
 

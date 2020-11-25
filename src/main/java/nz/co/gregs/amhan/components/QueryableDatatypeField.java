@@ -43,8 +43,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			returnField = new DBInstantField(example, (DBInstant) qdt);
 		} else if (qdt instanceof DBInteger) {
 			returnField = new DBIntegerField(example, (DBInteger) qdt);
-//		} else if (qdt instanceof DBIntegerEnum) {
-//			return new DBIntegerEnumField(example, (DBIntegerEnum) qdt);
+		} else if (qdt instanceof DBIntegerEnum) {
+			return new DBIntegerEnumField(example, (DBIntegerEnum) qdt);
 //		} else if (qdt instanceof DBJavaObject) {
 //			return new DBJavaObjectField(example, (DBJavaObject) qdt);
 //		} else if (qdt instanceof DBLargeBinary) {
@@ -166,10 +166,13 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 		super.setValue(value);
 	}
 
+	public QDT getQueryableDatatype() {
+		return qdt;
+	}
+
 	protected abstract void createInternalComponents();
 
 	protected abstract void addInternalComponents(QDT qdt);
 
 	protected abstract void addInternalValueChangeListeners();
-
 }
