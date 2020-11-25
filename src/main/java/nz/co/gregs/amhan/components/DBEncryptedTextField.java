@@ -42,7 +42,7 @@ public class DBEncryptedTextField<ROW extends DBRow> extends QueryableDatatypeFi
 		if (value != null) {
 			encryptedTextField.setValue(new String(value, StandardCharsets.UTF_8));
 			final String passPhraseText = passPhraseField.getValue();
-			if (passPhraseText != null) {
+			if (passPhraseText != null && !passPhraseText.isEmpty()) {
 				try {
 					Encrypted.fromCipherText(value).decrypt(passPhraseText);
 				} catch (UnableToDecryptInput ex) {
