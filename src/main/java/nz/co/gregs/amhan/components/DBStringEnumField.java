@@ -10,7 +10,7 @@ import com.vaadin.flow.component.select.Select;
 import java.util.List;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBEnumValue;
-import nz.co.gregs.dbvolution.datatypes.DBIntegerEnum;
+import nz.co.gregs.dbvolution.datatypes.DBStringEnum;
 
 /**
  * Server-side component for the {@code vaadin-number-field} element.
@@ -19,16 +19,16 @@ import nz.co.gregs.dbvolution.datatypes.DBIntegerEnum;
  * @param <ROW>
  * @param <ENUM>
  */
-public class DBIntegerEnumField<ROW extends DBRow, ENUM extends Enum<ENUM> & DBEnumValue<Long>> extends QueryableDatatypeField<ROW, Long, DBIntegerEnum<ENUM>> {
+public class DBStringEnumField<ROW extends DBRow, ENUM extends Enum<ENUM> & DBEnumValue<String>> extends QueryableDatatypeField<ROW, String, DBStringEnum<ENUM>> {
 
 	Select<String> field;
 
-	public DBIntegerEnumField(ROW row, DBIntegerEnum<ENUM> qdt) {
-		super(0L, row, qdt);
+	public DBStringEnumField(ROW row, DBStringEnum<ENUM> qdt) {
+		super("", row, qdt);
 	}
 
 	@Override
-	protected final void setPresentationValue(Long newPresentationValue) {
+	protected final void setPresentationValue(String newPresentationValue) {
 		if (newPresentationValue != null) {
 			field.setValue(getQueryableDatatype().getEnumFromCode(newPresentationValue).name());
 		} else {
@@ -37,7 +37,7 @@ public class DBIntegerEnumField<ROW extends DBRow, ENUM extends Enum<ENUM> & DBE
 	}
 
 	@Override
-	protected void addInternalComponents(DBIntegerEnum<ENUM> qdt) {
+	protected void addInternalComponents(DBStringEnum<ENUM> qdt) {
 		add(field);
 	}
 

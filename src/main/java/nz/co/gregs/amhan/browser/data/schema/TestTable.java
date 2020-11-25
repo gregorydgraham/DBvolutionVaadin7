@@ -67,6 +67,9 @@ public class TestTable extends DBRow {
 
 	@DBColumn
 	DBIntegerEnum<IntegerEnum> integerEnum = new DBIntegerEnum<>();
+	
+	@DBColumn
+	DBStringEnum<StringEnum> stringEnum = new DBStringEnum<>();
 
 	public TestTable() {
 	}
@@ -128,6 +131,11 @@ public class TestTable extends DBRow {
 	
 	public TestTable withIntegerEnum(IntegerEnum value) throws CannotEncryptInputException{
 		this.integerEnum.setValue(value);
+		return this;
+	}
+	
+	public TestTable withStringEnum(StringEnum value) throws CannotEncryptInputException{
+		this.stringEnum.setValue(value);
 		return this;
 	}
 	

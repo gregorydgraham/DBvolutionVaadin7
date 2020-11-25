@@ -63,15 +63,9 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 		} else if (qdt instanceof DBPasswordHash) {
 			returnField = new DBPasswordHashField<>(example, (DBPasswordHash) qdt);
 //		} else if (qdt instanceof DBStatistics) {
-//			return new DBStatisticsField(example, (DBStatistics) qdt);
-//		} else 
-//		if (qdt instanceof DBStringEnum) {
-//			return new TextField(
-//					prop.javaName(), 
-//					qdt.getValue(), 
-//					(field,newValue)->{((DBStringEnum<Enum<E>>) qdt).setValue(newLiteralValue);}
-//			);
-//			return new DBStringEnumField(example, (DBStringEnum) qdt);
+//			return new DBStatisticsField(example, (DBStatistics) qdt);		
+		} else if (qdt instanceof DBStringEnum) {
+			return new DBStringEnumField(example, (DBStringEnum) qdt);
 		} else if (qdt instanceof DBStringTrimmed) {
 			returnField = new DBStringTrimmedField<>(example, (DBStringTrimmed) qdt);
 		} else if (qdt instanceof DBUUID) {
