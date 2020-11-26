@@ -85,6 +85,9 @@ public class TestTable extends DBRow {
 	@DBColumn
 	DBDoubleEnum<DoubleEnum> doubleEnum = new DBDoubleEnum<>();
 
+	@DBColumn
+	DBLargeText largeText = new DBLargeText();
+
 	public TestTable() {
 	}
 
@@ -160,6 +163,11 @@ public class TestTable extends DBRow {
 
 	public TestTable withDoubleEnum(DoubleEnum value) {
 		this.doubleEnum.setValue(value);
+		return this;
+	}
+
+	public TestTable withLargeText(String value) {
+		this.largeText.setValue(value);
 		return this;
 	}
 

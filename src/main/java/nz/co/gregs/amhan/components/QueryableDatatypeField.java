@@ -9,6 +9,7 @@ import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
+import java.util.function.Function;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.*;
 import nz.co.gregs.dbvolution.internal.properties.PropertyWrapper;
@@ -74,8 +75,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			returnField = new DBDateField<>(example, (DBDate) qdt);
 		} else if (qdt instanceof DBEnum) {
 			return new DBEnumField(example, (DBEnum) qdt);
-//		} else if (qdt instanceof DBLargeText) {
-//			return new DBLargeTextField<A>(example, (DBLargeText) qdt);
+		} else if (qdt instanceof DBLargeText) {
+			returnField =new  DBLargeTextField(example, (DBLargeText) qdt);
 //		} else if (qdt instanceof DBLargeObject) {
 //			return new DBLargeObjectField(example, (DBLargeObject) qdt);
 		} else if (qdt instanceof DBNumber) {
@@ -129,6 +130,19 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 
 	protected final void updateQDT(BASETYPE newValue) {
 		setValue(newValue);
+		tellObserversOfSetValueEvent();
+	}
+
+	protected final <SOMETYPE> void updateQDT(SOMETYPE newValue, Function<SOMETYPE,BASETYPE> ifNotNullTransform) {
+		if (newValue==null){
+			updateQDTToNull();
+		}else{
+			updateQDT(ifNotNullTransform.apply(newValue));
+		}
+	}
+
+	protected final void updateQDTToNull() {
+		setValue(null);
 		tellObserversOfSetValueEvent();
 	}
 

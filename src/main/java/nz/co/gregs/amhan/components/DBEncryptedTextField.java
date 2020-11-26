@@ -7,6 +7,7 @@ package nz.co.gregs.amhan.components;
 
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.AbstractField.ComponentValueChangeEvent;
+import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -63,7 +64,7 @@ public class DBEncryptedTextField<ROW extends DBRow> extends QueryableDatatypeFi
 	protected void addInternalComponents(DBEncryptedText qdt) {
 		add(new Div(new Label("Plaintext"), textfield));
 		add(new Div(new Label("Passphrase"), passPhraseField));
-		add(new Div(new Label("Ciphertext"), encryptedTextField));
+		add(new Details(new Label("Ciphertext"), encryptedTextField));
 		add(new Div(warningField));
 	}
 
