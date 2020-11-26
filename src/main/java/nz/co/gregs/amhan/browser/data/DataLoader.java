@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringComponent
 public class DataLoader {
-
+	
 	@Bean
 	public CommandLineRunner loadDatabase(Database dbRepository) {
 		return args -> {
@@ -33,30 +33,30 @@ public class DataLoader {
 			// all of this could possibly be done in the Database constructor
 			// but this does avoid any issues with unfinished initialisation
 			setData(dbRepository);
-
+			
 			logger.info("Generated demo database schema");
 			return;
 		};
 	}
-
+	
 	private void setData(Database db) throws SQLException, CannotEncryptInputException {
 		db.createTable(new BrowserUser());
 		db.createTable(new Comments());
 		db.createTable(new TestTable());
 		final BrowserUser alice = new BrowserUser("alice", "password");
-
+		
 		db.insert(alice,
 				new BrowserUser("bart5", "password"),
 				new BrowserUser("cindy", "password"),
 				new BrowserUser("denny", "password"),
 				new BrowserUser("eruditeOtter", "shibboleth")
 		);
-
+		
 		db.insert(
 				new Comments().withOwner(alice).postedAt(Instant.now()).withText("Great website"),
 				new Comments().withOwner(alice).withText("Is anyone else here?")
 		);
-
+		
 		db.insert(
 				new TestTable()
 						.withOwner(alice)
@@ -78,7 +78,8 @@ public class DataLoader {
 						.withStringEnum(StringEnum.GATHER)
 						.withDate(new Date())
 						.withDoubleEnum(DoubleEnum.FOURTH)
+						.withLargeText("lots and lots of text, far too much for a normal field obviously")
 		);
 	}
-
+	
 }
