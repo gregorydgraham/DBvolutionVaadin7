@@ -62,8 +62,8 @@ public class DBEncryptedTextField<ROW extends DBRow> extends QueryableDatatypeFi
 
 	@Override
 	protected void addInternalComponents(DBEncryptedText qdt) {
-		add(new Div(new Label("Plaintext"), textfield));
 		add(new Div(new Label("Passphrase"), passPhraseField));
+		add(new Div(new Label("Plaintext"), textfield));
 		add(new Details(new Label("Ciphertext"), encryptedTextField));
 		add(new Div(warningField));
 	}
