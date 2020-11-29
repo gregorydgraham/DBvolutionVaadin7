@@ -62,7 +62,11 @@ public class DBRowGrid<ROW extends DBRow> extends Grid<ROW> {
 	public final void setItemsToAllRows(ROW example) {
 		final List<ROW> allRows;
 		try {
-			allRows = database.getDBTable(example).setBlankQueryAllowed(true).getAllRows();
+			allRows = database
+					.getDBTable(example)
+					.setBlankQueryAllowed(true)
+					.setPrintSQLBeforeExecution(true)
+					.getAllRows();
 			setItems(allRows);
 		} catch (SQLException | AccidentalCartesianJoinException | AccidentalBlankQueryException ex) {
 			Logger.getLogger(DBRowGrid.class.getName()).log(Level.SEVERE, null, ex);

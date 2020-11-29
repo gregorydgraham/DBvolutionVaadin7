@@ -5,6 +5,8 @@
  */
 package nz.co.gregs.amhan.browser.data.schema;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -87,6 +89,9 @@ public class TestTable extends DBRow {
 
 	@DBColumn
 	DBLargeText largeText = new DBLargeText();
+	
+	@DBColumn
+	DBLargeBinary largeBinary = new DBLargeBinary();
 
 	public TestTable() {
 	}
@@ -168,6 +173,16 @@ public class TestTable extends DBRow {
 
 	public TestTable withLargeText(String value) {
 		this.largeText.setValue(value);
+		return this;
+	}
+
+	public TestTable withLargeBinary(String value) {
+		this.largeBinary.setValue(value);
+		return this;
+	}
+	
+	public TestTable withLargeBinary(File value) throws IOException {
+		this.largeBinary.setValue(value);
 		return this;
 	}
 

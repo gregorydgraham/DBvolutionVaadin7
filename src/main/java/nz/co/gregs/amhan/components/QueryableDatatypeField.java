@@ -77,8 +77,9 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			return new DBEnumField(example, (DBEnum) qdt);
 		} else if (qdt instanceof DBLargeText) {
 			returnField =new  DBLargeTextField(example, (DBLargeText) qdt);
-//		} else if (qdt instanceof DBLargeObject) {
-//			return new DBLargeObjectField(example, (DBLargeObject) qdt);
+		} else if (qdt instanceof DBLargeBinary) {
+			final DBLargeBinaryField dbLargeBinaryField = new DBLargeBinaryField(example, (DBLargeBinary) qdt);
+			returnField= dbLargeBinaryField;
 		} else if (qdt instanceof DBNumber) {
 			returnField = new DBNumberField<>(example, (DBNumber) qdt);
 		} else if (qdt instanceof DBString) {

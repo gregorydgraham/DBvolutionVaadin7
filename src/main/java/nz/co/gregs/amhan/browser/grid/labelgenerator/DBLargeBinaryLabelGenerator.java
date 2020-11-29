@@ -21,7 +21,7 @@ public class DBLargeBinaryLabelGenerator<A extends DBRow> extends AbstractDBRowP
 
 	@Override
 	public String apply(A item) {
-		return getQDT(item).stringValue();
+		return getQDT(item).getSizeAsReadableString();
 	}
 
 }

@@ -8,6 +8,8 @@ package nz.co.gregs.amhan.browser.data;
 import nz.co.gregs.amhan.browser.data.schema.BrowserUser;
 import nz.co.gregs.amhan.browser.data.schema.Comments;
 import com.vaadin.flow.spring.annotation.SpringComponent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Date;
@@ -39,7 +41,7 @@ public class DataLoader {
 		};
 	}
 	
-	private void setData(Database db) throws SQLException, CannotEncryptInputException {
+	private void setData(Database db) throws SQLException, CannotEncryptInputException, IOException {
 		db.createTable(new BrowserUser());
 		db.createTable(new Comments());
 		db.createTable(new TestTable());
@@ -79,6 +81,7 @@ public class DataLoader {
 						.withDate(new Date())
 						.withDoubleEnum(DoubleEnum.FOURTH)
 						.withLargeText("lots and lots of text, far too much for a normal field obviously")
+						.withLargeBinary(new File("mclaren.jpg"))
 		);
 	}
 	

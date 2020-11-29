@@ -133,6 +133,11 @@
 			<version>0.9.3-SNAPSHOT</version>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>org.vaadin.olli</groupId>
+			<artifactId>file-download-wrapper</artifactId>
+			<version>3.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
