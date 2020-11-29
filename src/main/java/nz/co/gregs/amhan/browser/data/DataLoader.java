@@ -82,6 +82,7 @@ public class DataLoader {
 						.withDoubleEnum(DoubleEnum.FOURTH)
 						.withLargeText("lots and lots of text, far too much for a normal field obviously")
 						.withLargeBinary(new File("mclaren.jpg"))
+						.withJavaObject(new TestTable.SomeClass(5, "and dime"))
 		);
 	}
 	

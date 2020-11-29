@@ -7,6 +7,7 @@ package nz.co.gregs.amhan.browser.data.schema;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -92,6 +93,9 @@ public class TestTable extends DBRow {
 	
 	@DBColumn
 	DBLargeBinary largeBinary = new DBLargeBinary();
+	
+	@DBColumn
+	DBJavaObject<SomeClass> javaObject = new DBJavaObject<>();
 
 	public TestTable() {
 	}
@@ -185,6 +189,11 @@ public class TestTable extends DBRow {
 		this.largeBinary.setValue(value);
 		return this;
 	}
+	
+	public TestTable withJavaObject(SomeClass value) throws IOException {
+		this.javaObject.setValue(value);
+		return this;
+	}
 
 	public static class DBDoubleEnum<E extends Enum<E> & DBEnumValue<Double>> extends DBEnum<E, Double> {
 
@@ -222,6 +231,19 @@ public class TestTable extends DBRow {
 		@Override
 		public ColumnProvider getColumn(RowDefinition row) throws IncorrectRowProviderInstanceSuppliedException {
 			return new NumberColumn(row, this);
+		}
+	}
+	
+	
+	public static class SomeClass implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+		public String str;
+		public int integer;
+
+		public SomeClass(int integer, String str) {
+			this.str = str;
+			this.integer = integer;
 		}
 	}
 

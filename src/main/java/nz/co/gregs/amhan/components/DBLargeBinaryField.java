@@ -91,6 +91,7 @@ public class DBLargeBinaryField<ROW extends DBRow> extends QueryableDatatypeFiel
 	private void setDownloadButton() {
 		final StreamResource streamResource = new StreamResource(getFilename(), () -> new ByteArrayInputStream(getQueryableDatatype().getBytes()));
 		streamResource.setContentType(getContentType());
+		streamResource.setCacheTime(0);
 		downloadButton.setResource(streamResource);
 
 		Button button = new Button("Download");

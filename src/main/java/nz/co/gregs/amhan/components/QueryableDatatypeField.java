@@ -46,10 +46,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			returnField = new DBIntegerField(example, (DBInteger) qdt);
 		} else if (qdt instanceof DBIntegerEnum) {
 			return new DBIntegerEnumField(example, (DBIntegerEnum) qdt);
-//		} else if (qdt instanceof DBJavaObject) {
-//			return new DBJavaObjectField(example, (DBJavaObject) qdt);
-//		} else if (qdt instanceof DBLargeBinary) {
-//			return new DBLargeBinaryField<A>(example, (DBLargeBinary) qdt);
+		} else if (qdt instanceof DBJavaObject) {
+			returnField = new DBJavaObjectField(example, (DBJavaObject) qdt);
 		} else if (qdt instanceof DBLocalDate) {
 			returnField = new DBLocalDateField<>(example, (DBLocalDate) qdt);
 		} else if (qdt instanceof DBLocalDateTime) {
@@ -76,10 +74,10 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 		} else if (qdt instanceof DBEnum) {
 			return new DBEnumField(example, (DBEnum) qdt);
 		} else if (qdt instanceof DBLargeText) {
-			returnField =new  DBLargeTextField(example, (DBLargeText) qdt);
+			returnField = new DBLargeTextField(example, (DBLargeText) qdt);
 		} else if (qdt instanceof DBLargeBinary) {
 			final DBLargeBinaryField dbLargeBinaryField = new DBLargeBinaryField(example, (DBLargeBinary) qdt);
-			returnField= dbLargeBinaryField;
+			returnField = dbLargeBinaryField;
 		} else if (qdt instanceof DBNumber) {
 			returnField = new DBNumberField<>(example, (DBNumber) qdt);
 		} else if (qdt instanceof DBString) {
@@ -134,10 +132,10 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 		tellObserversOfSetValueEvent();
 	}
 
-	protected final <SOMETYPE> void updateQDT(SOMETYPE newValue, Function<SOMETYPE,BASETYPE> ifNotNullTransform) {
-		if (newValue==null){
+	protected final <SOMETYPE> void updateQDT(SOMETYPE newValue, Function<SOMETYPE, BASETYPE> ifNotNullTransform) {
+		if (newValue == null) {
 			updateQDTToNull();
-		}else{
+		} else {
 			updateQDT(ifNotNullTransform.apply(newValue));
 		}
 	}
