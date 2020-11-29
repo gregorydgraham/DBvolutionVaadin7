@@ -36,8 +36,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			return new DBDateOnlyField(example, (DBDateOnly) qdt);
 //		} else if (qdt instanceof DBDateRepeat) {
 //			return new DBDateRepeatField<A>(example, (DBDateRepeat) qdt);
-//		} else if (qdt instanceof DBDuration) {
-//			return new DBDurationField<A>(example, (DBDuration) qdt);
+		} else if (qdt instanceof DBDuration) {
+			returnField = new DBDurationField(example, (DBDuration) qdt);
 		} else if (qdt instanceof DBEncryptedText) {
 			return new DBEncryptedTextField(example, (DBEncryptedText) qdt);
 		} else if (qdt instanceof DBInstant) {

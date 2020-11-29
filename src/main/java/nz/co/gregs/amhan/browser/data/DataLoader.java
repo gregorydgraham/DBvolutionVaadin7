@@ -11,6 +11,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
@@ -83,6 +84,7 @@ public class DataLoader {
 						.withLargeText("lots and lots of text, far too much for a normal field obviously")
 						.withLargeBinary(new File("mclaren.jpg"))
 						.withJavaObject(new TestTable.SomeClass(5, "and dime"))
+						.withDuration(Duration.ofSeconds(2, 500))
 		);
 	}
 	

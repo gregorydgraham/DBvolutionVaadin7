@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -96,6 +97,9 @@ public class TestTable extends DBRow {
 	
 	@DBColumn
 	DBJavaObject<SomeClass> javaObject = new DBJavaObject<>();
+	
+	@DBColumn
+	DBDuration duration = new DBDuration();
 
 	public TestTable() {
 	}
@@ -192,6 +196,11 @@ public class TestTable extends DBRow {
 	
 	public TestTable withJavaObject(SomeClass value) throws IOException {
 		this.javaObject.setValue(value);
+		return this;
+	}
+	
+	public TestTable withDuration(Duration value) throws IOException {
+		this.duration.setValue(value);
 		return this;
 	}
 
