@@ -10,6 +10,7 @@ import nz.co.gregs.amhan.browser.data.schema.Comments;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
@@ -85,6 +86,7 @@ public class DataLoader {
 						.withLargeBinary(new File("mclaren.jpg"))
 						.withJavaObject(new TestTable.SomeClass(5, "and dime"))
 						.withDuration(Duration.ofSeconds(2, 500))
+						.withUntypedValue(StandardCharsets.UTF_8)
 		);
 	}
 	

@@ -100,6 +100,9 @@ public class TestTable extends DBRow {
 	
 	@DBColumn
 	DBDuration duration = new DBDuration();
+	
+	@DBColumn
+	DBUntypedValue untypedValue = new DBUntypedValue();
 
 	public TestTable() {
 	}
@@ -201,6 +204,11 @@ public class TestTable extends DBRow {
 	
 	public TestTable withDuration(Duration value) throws IOException {
 		this.duration.setValue(value);
+		return this;
+	}
+	
+	public TestTable withUntypedValue(Object value) throws IOException {
+		this.untypedValue.setValue(value);
 		return this;
 	}
 

@@ -66,8 +66,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			returnField = new DBUUIDField<>(example, (DBUUID) qdt);
 		} else if (qdt instanceof DBUnknownDatatype) {
 			returnField = new DBUnknownDatatypeField<>(example, (DBUnknownDatatype) qdt);
-//		} else if (qdt instanceof DBUntypedValue) {
-//			return new DBUntypedValueField<A>(example, (DBUntypedValue) qdt);
+		} else if (qdt instanceof DBUntypedValue) {
+			return new DBUntypedValueField(example, (DBUntypedValue) qdt);
 		} // the following types need to be checked last as they have subtypes 
 		else if (qdt instanceof DBDate) {
 			returnField = new DBDateField<>(example, (DBDate) qdt);
