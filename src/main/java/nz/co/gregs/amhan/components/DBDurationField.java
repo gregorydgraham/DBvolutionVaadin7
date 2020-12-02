@@ -7,7 +7,6 @@ package nz.co.gregs.amhan.components;
 
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.textfield.IntegerField;
 import java.time.*;
 import nz.co.gregs.dbvolution.DBRow;

@@ -87,6 +87,7 @@ public class DataLoader {
 						.withJavaObject(new TestTable.SomeClass(5, "and dime"))
 						.withDuration(Duration.ofSeconds(2, 500))
 						.withUntypedValue(StandardCharsets.UTF_8)
+						.withDateRepeat(org.joda.time.Period.years(1).plusMonths(2).plusDays(3).plusHours(4).plusMinutes(5).plusSeconds(6).plusMillis(7))
 		);
 	}
 	

@@ -34,8 +34,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			returnField = new DBBooleanArrayField(example, (DBBooleanArray) qdt);
 		} else if (qdt instanceof DBDateOnly) {
 			return new DBDateOnlyField(example, (DBDateOnly) qdt);
-//		} else if (qdt instanceof DBDateRepeat) {
-//			return new DBDateRepeatField<A>(example, (DBDateRepeat) qdt);
+		} else if (qdt instanceof DBDateRepeat) {
+			returnField = new DBDateRepeatField(example, (DBDateRepeat) qdt);
 		} else if (qdt instanceof DBDuration) {
 			returnField = new DBDurationField(example, (DBDuration) qdt);
 		} else if (qdt instanceof DBEncryptedText) {

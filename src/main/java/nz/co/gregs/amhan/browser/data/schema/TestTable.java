@@ -28,6 +28,7 @@ import nz.co.gregs.dbvolution.exceptions.CannotEncryptInputException;
 import nz.co.gregs.dbvolution.exceptions.IncorrectRowProviderInstanceSuppliedException;
 import nz.co.gregs.dbvolution.query.RowDefinition;
 import nz.co.gregs.dbvolution.utility.encryption.Encrypted;
+import org.joda.time.Period;
 
 /**
  *
@@ -103,6 +104,9 @@ public class TestTable extends DBRow {
 	
 	@DBColumn
 	DBUntypedValue untypedValue = new DBUntypedValue();
+	
+	@DBColumn
+	DBDateRepeat dateRepeat = new DBDateRepeat();
 
 	public TestTable() {
 	}
@@ -209,6 +213,11 @@ public class TestTable extends DBRow {
 	
 	public TestTable withUntypedValue(Object value) throws IOException {
 		this.untypedValue.setValue(value);
+		return this;
+	}
+	
+	public TestTable withDateRepeat(org.joda.time.Period value) throws IOException {
+		this.dateRepeat.setValue(value);
 		return this;
 	}
 
