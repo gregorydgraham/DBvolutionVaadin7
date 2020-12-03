@@ -9,6 +9,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import java.util.logging.Logger;
@@ -20,17 +21,14 @@ import nz.co.gregs.dbvolution.DBRow;
 @Route(value = "selecttable", layout = MainView.class)
 @PageTitle("Select Table")
 @CssImport("./styles/views/selecttable/select-table-view.css")
-public class SelectTableView extends Composite<Div> {
+public class SelectTableView extends Composite<Div> /*implements HasDynamicTitle*/ {
 
 	private final Logger LOG = Logger.getLogger(this.getClass().getCanonicalName());
 
 	private DataModelTablesGrid grid = new DataModelTablesGrid();
 
-	private Database database;
-
-	public SelectTableView(@Autowired Database db) {
+	public SelectTableView() {
 		setId("quick-query-view");
-		this.database = database;
 		configureGrid();
 
 		getContent().add(grid);

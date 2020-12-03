@@ -92,24 +92,21 @@ public class TestTable extends DBRow {
 
 	@DBColumn
 	DBLargeText largeText = new DBLargeText();
-	
+
 	@DBColumn
 	DBLargeBinary largeBinary = new DBLargeBinary();
-	
+
 	@DBColumn
 	DBJavaObject<SomeClass> javaObject = new DBJavaObject<>();
-	
+
 	@DBColumn
 	DBDuration duration = new DBDuration();
-	
+
 	@DBColumn
 	DBUntypedValue untypedValue = new DBUntypedValue();
-	
+
 	@DBColumn
 	DBDateRepeat dateRepeat = new DBDateRepeat();
-	
-	@DBColumn
-	DBNumberStatistics ratingsStats = new DBNumberStatistics(this.column(rating));
 
 	public TestTable() {
 	}
@@ -198,27 +195,27 @@ public class TestTable extends DBRow {
 		this.largeBinary.setValue(value);
 		return this;
 	}
-	
+
 	public TestTable withLargeBinary(File value) throws IOException {
 		this.largeBinary.setValue(value);
 		return this;
 	}
-	
+
 	public TestTable withJavaObject(SomeClass value) throws IOException {
 		this.javaObject.setValue(value);
 		return this;
 	}
-	
+
 	public TestTable withDuration(Duration value) throws IOException {
 		this.duration.setValue(value);
 		return this;
 	}
-	
+
 	public TestTable withUntypedValue(Object value) throws IOException {
 		this.untypedValue.setValue(value);
 		return this;
 	}
-	
+
 	public TestTable withDateRepeat(org.joda.time.Period value) throws IOException {
 		this.dateRepeat.setValue(value);
 		return this;
@@ -262,8 +259,7 @@ public class TestTable extends DBRow {
 			return new NumberColumn(row, this);
 		}
 	}
-	
-	
+
 	public static class SomeClass implements Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -275,5 +271,6 @@ public class TestTable extends DBRow {
 			this.integer = integer;
 		}
 	}
+
 
 }

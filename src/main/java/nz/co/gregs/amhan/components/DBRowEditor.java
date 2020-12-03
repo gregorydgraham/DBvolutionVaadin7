@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.databases.DBDatabase;
 import nz.co.gregs.dbvolution.datatypes.QueryableDatatype;
@@ -77,7 +78,7 @@ public class DBRowEditor<ROW extends DBRow> extends Composite<Div> implements DB
 	}
 
 	private void addFields(FormLayout formLayout, ROW row) {
-		var qdts = row.getColumnQueryableDatatypes();
+		var qdts = row.getSelectedProperties().stream().map(p->p.getQueryableDatatype()).collect(Collectors.toList());
 		qdts.forEach(qdt -> addQueryableDatatypeField(qdt, row, formLayout));
 	}
 

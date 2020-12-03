@@ -5,7 +5,10 @@
  */
 package nz.co.gregs.amhan.browser.data;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nz.co.gregs.dbvolution.databases.DBDatabaseHandle;
+import nz.co.gregs.dbvolution.databases.settingsbuilders.SQLiteSettingsBuilder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +20,11 @@ public class Database extends DBDatabaseHandle{
 
 	public Database() {
 		super();
+		try {
+			this.setDatabase(new SQLiteSettingsBuilder().setFilename("amhanBrowser.sqlite").getDBDatabase());
+		} catch (Exception ex) {
+			Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 	
 }
