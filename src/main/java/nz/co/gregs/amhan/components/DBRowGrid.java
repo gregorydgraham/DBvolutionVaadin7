@@ -75,7 +75,7 @@ public class DBRowGrid<ROW extends DBRow> extends Grid<ROW> {
 
 	public final <A extends Object> void setDefaultColumns(ROW example) {
 		setColumns();
-		List<PropertyWrapper<?, ?, ?>> wrapper = example.getColumnPropertyWrappers();
+		List<PropertyWrapper<?, ?, ?>> wrapper = example.getSelectedProperties();
 		wrapper.forEach(
 				prop -> {
 					final RowPropertyComparator<ROW> rowPropertyComparator 
