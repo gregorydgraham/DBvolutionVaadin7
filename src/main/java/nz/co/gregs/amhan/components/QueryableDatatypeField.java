@@ -52,8 +52,8 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			returnField = new DBLocalDateField<>(example, (DBLocalDate) qdt);
 		} else if (qdt instanceof DBLocalDateTime) {
 			returnField = new DBLocalDateTimeField<>(example, (DBLocalDateTime) qdt);
-//		} else if (qdt instanceof DBNumberStatistics) {
-//			return new DBNumberStatisticsField<A>(example, (DBNumberStatistics) qdt);
+		} else if (qdt instanceof DBNumberStatistics) {
+			returnField = new DBNumberStatisticsField(example, (DBNumberStatistics) qdt);
 		} else if (qdt instanceof DBPasswordHash) {
 			returnField = new DBPasswordHashField<>(example, (DBPasswordHash) qdt);
 //		} else if (qdt instanceof DBStatistics) {

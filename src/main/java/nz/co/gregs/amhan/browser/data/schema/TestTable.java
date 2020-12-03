@@ -107,6 +107,9 @@ public class TestTable extends DBRow {
 	
 	@DBColumn
 	DBDateRepeat dateRepeat = new DBDateRepeat();
+	
+	@DBColumn
+	DBNumberStatistics ratingsStats = new DBNumberStatistics(this.column(rating));
 
 	public TestTable() {
 	}
