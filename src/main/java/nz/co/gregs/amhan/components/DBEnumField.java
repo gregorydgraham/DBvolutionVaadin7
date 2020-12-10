@@ -17,6 +17,7 @@ import nz.co.gregs.dbvolution.datatypes.DBEnumValue;
  *
  * @author Vaadin Ltd.
  * @param <ROW>
+ * @param <BASETYPE>
  * @param <ENUM>
  */
 public class DBEnumField<ROW extends DBRow, BASETYPE, ENUM extends Enum<ENUM> & DBEnumValue<BASETYPE>> extends QueryableDatatypeField<ROW, BASETYPE, DBEnum<ENUM, BASETYPE>> {
