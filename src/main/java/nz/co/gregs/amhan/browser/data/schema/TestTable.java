@@ -28,7 +28,6 @@ import nz.co.gregs.dbvolution.exceptions.CannotEncryptInputException;
 import nz.co.gregs.dbvolution.exceptions.IncorrectRowProviderInstanceSuppliedException;
 import nz.co.gregs.dbvolution.query.RowDefinition;
 import nz.co.gregs.dbvolution.utility.encryption.Encrypted;
-import org.joda.time.Period;
 
 /**
  *
@@ -107,6 +106,9 @@ public class TestTable extends DBRow {
 
 	@DBColumn
 	DBDateRepeat dateRepeat = new DBDateRepeat();
+
+	@DBColumn
+	DBNumberStatistics ratingStats = new DBNumberStatistics(this.column(rating));
 
 	public TestTable() {
 	}
@@ -271,6 +273,5 @@ public class TestTable extends DBRow {
 			this.integer = integer;
 		}
 	}
-
 
 }

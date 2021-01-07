@@ -27,39 +27,39 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 
 	@SuppressWarnings("unchecked")
 	public static <ROW extends DBRow, T, QDT extends QueryableDatatype<T>> QueryableDatatypeField<ROW, T, QDT> getFieldForRowAndQDT(ROW example, QDT qdt) {
-		QueryableDatatypeField<?, ?, ?> returnField;
+		QueryableDatatypeField<ROW, ?, ?> returnField;
 		if (qdt instanceof DBBoolean) {
-			returnField = new DBBooleanField<>(example, (DBBoolean) qdt);
+			returnField = new DBBooleanField<ROW>(example, (DBBoolean) qdt);
 		} else if (qdt instanceof DBBooleanArray) {
-			returnField = new DBBooleanArrayField(example, (DBBooleanArray) qdt);
+			returnField = new DBBooleanArrayField<ROW>(example, (DBBooleanArray) qdt);
 		} else if (qdt instanceof DBDateOnly) {
-			return new DBDateOnlyField(example, (DBDateOnly) qdt);
+			returnField = new DBDateOnlyField<ROW>(example, (DBDateOnly) qdt);
 		} else if (qdt instanceof DBDateRepeat) {
-			returnField = new DBDateRepeatField(example, (DBDateRepeat) qdt);
+			returnField = new DBDateRepeatField<ROW>(example, (DBDateRepeat) qdt);
 		} else if (qdt instanceof DBDuration) {
-			returnField = new DBDurationField(example, (DBDuration) qdt);
+			returnField = new DBDurationField<ROW>(example, (DBDuration) qdt);
 		} else if (qdt instanceof DBEncryptedText) {
-			return new DBEncryptedTextField(example, (DBEncryptedText) qdt);
+			returnField = new DBEncryptedTextField<ROW>(example, (DBEncryptedText) qdt);
 		} else if (qdt instanceof DBInstant) {
-			returnField = new DBInstantField(example, (DBInstant) qdt);
+			returnField = new DBInstantField<ROW>(example, (DBInstant) qdt);
 		} else if (qdt instanceof DBInteger) {
-			returnField = new DBIntegerField(example, (DBInteger) qdt);
+			returnField = new DBIntegerField<ROW>(example, (DBInteger) qdt);
 		} else if (qdt instanceof DBIntegerEnum) {
-			return new DBIntegerEnumField(example, (DBIntegerEnum) qdt);
+			returnField = new DBIntegerEnumField<>(example, (DBIntegerEnum<?>) qdt);
 		} else if (qdt instanceof DBJavaObject) {
-			returnField = new DBJavaObjectField(example, (DBJavaObject) qdt);
+			returnField = new DBJavaObjectField<>(example, (DBJavaObject<?>) qdt);
 		} else if (qdt instanceof DBLocalDate) {
 			returnField = new DBLocalDateField<>(example, (DBLocalDate) qdt);
 		} else if (qdt instanceof DBLocalDateTime) {
 			returnField = new DBLocalDateTimeField<>(example, (DBLocalDateTime) qdt);
 		} else if (qdt instanceof DBNumberStatistics) {
-			returnField = new DBNumberStatisticsField(example, (DBNumberStatistics) qdt);
+			returnField = new DBNumberStatisticsField<>(example, (DBNumberStatistics) qdt);
 		} else if (qdt instanceof DBPasswordHash) {
 			returnField = new DBPasswordHashField<>(example, (DBPasswordHash) qdt);
 //		} else if (qdt instanceof DBStatistics) {
 //			return new DBStatisticsField(example, (DBStatistics) qdt);		
 		} else if (qdt instanceof DBStringEnum) {
-			return new DBStringEnumField(example, (DBStringEnum) qdt);
+			returnField = new DBStringEnumField<>(example, (DBStringEnum<?>) qdt);
 		} else if (qdt instanceof DBStringTrimmed) {
 			returnField = new DBStringTrimmedField<>(example, (DBStringTrimmed) qdt);
 		} else if (qdt instanceof DBUUID) {
@@ -70,21 +70,21 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 			return new DBUntypedValueField(example, (DBUntypedValue) qdt);
 		} // the following types need to be checked last as they have subtypes 
 		else if (qdt instanceof DBDate) {
-			returnField = new DBDateField<>(example, (DBDate) qdt);
+			returnField = new DBDateField<ROW>(example, (DBDate) qdt);
 		} else if (qdt instanceof DBEnum) {
-			return new DBEnumField(example, (DBEnum) qdt);
+			return new DBEnumField<>(example, (DBEnum) qdt);
 		} else if (qdt instanceof DBLargeText) {
-			returnField = new DBLargeTextField(example, (DBLargeText) qdt);
+			returnField = new DBLargeTextField<>(example, (DBLargeText) qdt);
 		} else if (qdt instanceof DBLargeBinary) {
-			final DBLargeBinaryField dbLargeBinaryField = new DBLargeBinaryField(example, (DBLargeBinary) qdt);
+			final DBLargeBinaryField dbLargeBinaryField = new DBLargeBinaryField<ROW>(example, (DBLargeBinary) qdt);
 			returnField = dbLargeBinaryField;
 		} else if (qdt instanceof DBNumber) {
-			returnField = new DBNumberField<>(example, (DBNumber) qdt);
+			returnField = new DBNumberField<ROW>(example, (DBNumber) qdt);
 		} else if (qdt instanceof DBString) {
-			returnField = new DBStringField<>(example, (DBString) qdt);
+			returnField = new DBStringField<ROW>(example, (DBString) qdt);
 		} // and a default handler for all those ones I've forgotten
 		else {
-			return new DBTodoField<>(example, (QueryableDatatype) qdt);
+			returnField = new DBTodoField<ROW>(example, (QueryableDatatype<Object>) qdt);
 		}
 		return (QueryableDatatypeField<ROW, T, QDT>) returnField;
 	}
@@ -92,7 +92,7 @@ public abstract class QueryableDatatypeField<ROW extends DBRow, BASETYPE, QDT ex
 	private final ROW row;
 	private final QDT qdt;
 	private final PropertyWrapper<ROW, BASETYPE, QDT> prop;
-	private boolean initialised;
+//	private boolean initialised;
 
 	protected QueryableDatatypeField(BASETYPE defaultValue, ROW row, QDT qdt) {
 		super(defaultValue);

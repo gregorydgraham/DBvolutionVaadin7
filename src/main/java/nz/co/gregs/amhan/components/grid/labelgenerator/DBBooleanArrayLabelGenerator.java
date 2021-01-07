@@ -7,7 +7,8 @@ package nz.co.gregs.amhan.components.grid.labelgenerator;
 
 import nz.co.gregs.dbvolution.DBRow;
 import nz.co.gregs.dbvolution.datatypes.DBBooleanArray;
-import nz.co.gregs.dbvolution.utility.SeparatedString;
+import nz.co.gregs.separatedstring.SeparatedString;
+import nz.co.gregs.separatedstring.SeparatedStringBuilder;
 
 /**
  *
@@ -27,13 +28,12 @@ public class DBBooleanArrayLabelGenerator<ROW extends DBRow> extends AbstractDBR
 		if (value==null || value.length==0){
 			return "<NULL>";
 		}else{
-			SeparatedString builder = SeparatedString.byCommaSpace().startsWith("[").endsWith("]");
+			SeparatedString builder = SeparatedStringBuilder.byCommaSpace().withPrefix("[").withSuffix("]");
 			for (Boolean bool : value) {
 				builder.add(bool.toString());
 			}
 			return builder.toString();
 		}
-//		return getQDT(item).stringValue();
 	}
 
 }

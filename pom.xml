@@ -138,6 +138,11 @@
 			<artifactId>file-download-wrapper</artifactId>
 			<version>3.0.1</version>
 		</dependency>
+	 <dependency>
+	  <groupId>nz.co.gregs</groupId>
+	  <artifactId>separatedstring</artifactId>
+	  <version>1.2</version>
+	 </dependency>
 	</dependencies>
 
 	<build>

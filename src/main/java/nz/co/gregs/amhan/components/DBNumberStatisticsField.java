@@ -18,16 +18,14 @@ public class DBNumberStatisticsField<ROW extends DBRow> extends QueryableDatatyp
 
 	private NumberField minNumber;
 	private NumberField maxNumber;
-	private NumberField medianNumber;
 	private NumberField averageNumber;
 	private NumberField stdDev;
-	private NumberField firstQuartileNumber;
-	private NumberField thirdQuartileNumber;
 	private NumberField countOfRows;
 	private NumberField sum;
 
 	public DBNumberStatisticsField(ROW row, DBNumberStatistics qdt) {
 		super(null, row, qdt);
+		System.out.println("DBNumberStatisticsField INIT: "+qdt.toString());
 	}
 
 	@Override
@@ -35,17 +33,12 @@ public class DBNumberStatisticsField<ROW extends DBRow> extends QueryableDatatyp
 		DBNumberStatistics qdt = getQueryableDatatype();
 		if (qdt != null) {
 			System.out.println("STATS: " + qdt);
-			countOfRows.setValue(qdt.count().doubleValue());
-			sum.setValue(qdt.sum().doubleValue());
-			minNumber.setValue(qdt.min().doubleValue());
-			maxNumber.setValue(qdt.max().doubleValue());
-			averageNumber.setValue(qdt.average().doubleValue());
-			if (qdt.standardDeviation() != null) {
-				stdDev.setValue(qdt.standardDeviation().doubleValue());
-			}
-//			medianNumber.setValue(qdt.median().doubleValue());
-//			firstQuartileNumber.setValue(qdt.firstQuartile().doubleValue());
-//			thirdQuartileNumber.setValue(qdt.thirdQuartile().doubleValue());
+			countOfRows.setValue(qdt.count() == null ? null : qdt.count().doubleValue());
+			sum.setValue(qdt.sum() == null ? null : qdt.sum().doubleValue());
+			minNumber.setValue(qdt.min() == null ? null : qdt.min().doubleValue());
+			maxNumber.setValue(qdt.max() == null ? null : qdt.max().doubleValue());
+			averageNumber.setValue(qdt.average() == null ? null : qdt.average().doubleValue());
+			stdDev.setValue(qdt.standardDeviation() == null ? null : qdt.standardDeviation().doubleValue());
 		} else {
 			clear();
 		}
@@ -56,11 +49,8 @@ public class DBNumberStatisticsField<ROW extends DBRow> extends QueryableDatatyp
 		super.clear();
 		minNumber.clear();
 		maxNumber.clear();
-		medianNumber.clear();
 		averageNumber.clear();
 		stdDev.clear();
-		firstQuartileNumber.clear();
-		thirdQuartileNumber.clear();
 		countOfRows.clear();
 		sum.clear();
 	}
@@ -73,10 +63,7 @@ public class DBNumberStatisticsField<ROW extends DBRow> extends QueryableDatatyp
 				minNumber,
 				maxNumber,
 				averageNumber,
-				 stdDev
-		//				,medianNumber,
-		//				firstQuartileNumber,
-		//				thirdQuartileNumber
+				stdDev
 		);
 	}
 
@@ -86,11 +73,8 @@ public class DBNumberStatisticsField<ROW extends DBRow> extends QueryableDatatyp
 		sum = new NumberField("Sum");
 		minNumber = new NumberField("Minimum");
 		maxNumber = new NumberField("Maximum");
-		medianNumber = new NumberField("Median");
 		averageNumber = new NumberField("Average");
 		stdDev = new NumberField("Std Deviation");
-		firstQuartileNumber = new NumberField("1st Quartile");
-		thirdQuartileNumber = new NumberField("3rd Quartile");
 	}
 
 	@Override
